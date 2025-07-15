@@ -1,0 +1,5 @@
+{
+  "name": "Accountant RAG Chatbot",
+  "description": "An AI-powered financial assistant for accountants and business professionals. It features a sophisticated chat interface, document management with AI-powered analysis, and conversation history tracking.",
+  "requestFramePermissions": []
+}
