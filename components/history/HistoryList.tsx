@@ -1,8 +1,10 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { ChatHistory } from '../../types';
 import HistoryItem from './HistoryItem';
 import ConfirmDialog from '../shared/ConfirmDialog';
+import { useChatStore } from '../../stores/chatStore';
 
 interface HistoryListProps {
   history: ChatHistory[];
@@ -11,10 +13,15 @@ interface HistoryListProps {
 
 const HistoryList: React.FC<HistoryListProps> = ({ history, onDelete }) => {
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { loadHistory } = useChatStore();
 
   const handleView = (id: string) => {
-    // In a real app, this would navigate to the chat page with the loaded history
-    alert(`Viewing history item ${id} is not implemented in this mock.`);
+    const historyItem = history.find(item => item.id === id);
+    if (historyItem) {
+      loadHistory(historyItem.messages);
+      navigate('/');
+    }
   };
 
   if (history.length === 0) {

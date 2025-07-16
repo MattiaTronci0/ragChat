@@ -22,11 +22,11 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       <div className={`relative max-w-lg lg:max-w-xl xl:max-w-2xl px-4 py-3 rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-lg ${
           isUser
             ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-br-none'
-            : 'bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-bl-none'
+            : 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-bl-none border border-slate-200 dark:border-slate-600'
         }`}
       >
         <p className="text-sm break-words whitespace-pre-wrap">{content}</p>
-        <div className={`text-xs mt-2 ${isUser ? 'text-blue-100/80' : 'text-slate-400 dark:text-slate-500'}`}>
+        <div className={`text-xs mt-2 ${isUser ? 'text-blue-100/80' : 'text-slate-400 dark:text-slate-300'}`}>
           {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} {!isUser && " - AI"}
         </div>
          {/* Message Tail */}

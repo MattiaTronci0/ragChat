@@ -34,7 +34,7 @@ const getFileIcon = (type: string) => {
 };
 
 const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPreview }) => {
-  const { categories } = useDocumentStore();
+  const { categories, getFileContent } = useDocumentStore();
   const categoryInfo = categories.find(c => c.name === document.category);
   const colorClass = categoryInfo ? categoryColorMap[categoryInfo.color] : categoryColorMap['gray'];
 
@@ -47,29 +47,58 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   };
   
-  const handleDownload = () => {
-    if (document.file) {
-      const url = URL.createObjectURL(document.file);
-      const link = window.document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', document.name);
-      window.document.body.appendChild(link);
-      link.click();
-      window.document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } else {
-      alert(`Download for "${document.name}" is not available as it's mock data without a file object.`);
+  const handleDownload = async () => {
+    try {
+      const file = await getFileContent(document);
+      if (file) {
+        const url = URL.createObjectURL(file);
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', document.name);
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+        alert(`Unable to download "${document.name}". File not found.`);
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      alert(`Failed to download "${document.name}". Please try again.`);
+    }
+  };
+
+  const handlePreview = async () => {
+    try {
+      const file = await getFileContent(document);
+      if (file) {
+        onPreview({ ...document, file });
+      } else {
+        alert(`Unable to preview "${document.name}". File not found.`);
+      }
+    } catch (error) {
+      console.error('Preview error:', error);
+      alert(`Failed to preview "${document.name}". Please try again.`);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      onDelete(document.id);
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert(`Failed to delete "${document.name}". Please try again.`);
     }
   };
 
 
   return (
-    <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-lg rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 flex flex-col animate-[slideUp_0.6s_ease-out_forwards] opacity-0">
+    <div className="bg-white/95 dark:bg-slate-800/60 backdrop-blur-lg rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-300 border border-slate-300 dark:border-slate-700 flex flex-col animate-[slideUp_0.6s_ease-out_forwards] opacity-0">
       <div className="flex items-start gap-4">
         <div className="text-slate-500 dark:text-slate-400">{getFileIcon(document.type)}</div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-slate-800 dark:text-slate-100 truncate" title={document.name}>{document.name}</p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="font-semibold text-slate-900 dark:text-slate-100 truncate" title={document.name}>{document.name}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
             {formatBytes(document.size)} - {document.uploadDate.toLocaleDateString()}
           </p>
         </div>
@@ -80,9 +109,9 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
         </span>
       </div>
       <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700/50 flex justify-end items-center gap-2">
-        <button onClick={() => onPreview(document)} className="p-2 text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 rounded-full transition-colors" title="Preview"><EyeIcon className="w-5 h-5"/></button>
-        <button onClick={handleDownload} className="p-2 text-slate-500 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-700 rounded-full transition-colors" title="Download"><DownloadIcon className="w-5 h-5"/></button>
-        <button onClick={() => onDelete(document.id)} className="p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-full transition-colors" title="Delete"><Trash2Icon className="w-5 h-5"/></button>
+        <button onClick={handlePreview} className="p-2 text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 rounded-full transition-colors" title="Preview"><EyeIcon className="w-5 h-5"/></button>
+        <button onClick={handleDownload} className="p-2 text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 rounded-full transition-colors" title="Download"><DownloadIcon className="w-5 h-5"/></button>
+        <button onClick={handleDelete} className="p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-full transition-colors" title="Delete"><Trash2Icon className="w-5 h-5"/></button>
       </div>
     </div>
   );

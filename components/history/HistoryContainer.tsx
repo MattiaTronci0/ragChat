@@ -19,17 +19,17 @@ const HistoryContainer: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full overflow-hidden p-4 md:p-6">
-       <header className="flex-shrink-0 animate-[fadeIn_0.6s_ease-out]">
+       <header className="flex-shrink-0 animate-fade-in">
         <div className="flex items-center gap-3">
           <HistoryIcon className="w-8 h-8 text-orange-500" />
           <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
             Conversation History
           </h1>
         </div>
-        <p className="text-slate-500 dark:text-slate-400 mt-1">Review and manage your past conversations.</p>
+        <p className="text-slate-600 dark:text-slate-300 mt-1">Review and manage your past conversations.</p>
       </header>
 
-      <div className="my-6 flex flex-col md:flex-row items-center justify-between gap-4 animate-[slideUp_0.6s_ease-out] [animation-delay:100ms] opacity-0">
+      <div className="my-6 flex flex-col md:flex-row items-center justify-between gap-4 animate-slide-up [animation-delay:100ms]">
         <div className="w-full md:w-auto md:flex-grow md:max-w-xs">
           <HistorySearch />
         </div>
@@ -47,7 +47,7 @@ const HistoryContainer: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-y-auto p-6 animate-[fadeIn_0.6s_ease-out] [animation-delay:200ms]">
+      <div className="flex-1 bg-white/90 dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-300 dark:border-slate-800 overflow-y-auto p-6 animate-fade-in [animation-delay:200ms]">
         <HistoryList history={filteredHistory} onDelete={deleteHistory} />
       </div>
 

@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Accountant RAG Chatbot</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class'
+      }
+    </script>
+    <style>
+      /* Tailwind dark mode text overrides */
+      .dark .text-slate-100 { color: #ffffff !important; }
+      .dark .text-slate-200 { color: #f8fafc !important; }
+      .dark .text-slate-300 { color: #f1f5f9 !important; }
+      .dark .text-slate-400 { color: #e2e8f0 !important; }
+      .dark .text-slate-500 { color: #cbd5e1 !important; }
+      .dark .text-slate-600 { color: #f1f5f9 !important; }
+      .dark .text-slate-700 { color: #e2e8f0 !important; }
+      .dark .text-slate-800 { color: #f1f5f9 !important; }
+      .dark .text-slate-900 { color: #ffffff !important; }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,52 +30,6 @@
       body {
         font-family: 'Inter', sans-serif;
       }
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(156, 163, 175, 0.5); /* gray-400 with 50% opacity */
-        border-radius: 3px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: rgba(107, 114, 128, 0.5); /* gray-500 with 50% opacity */
-      }
-      /* Custom Animations */
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes messageSlideLeft {
-        from { opacity: 0; transform: translateX(-20px); }
-        to { opacity: 1; transform: translateX(0); }
-      }
-      @keyframes messageSlideRight {
-        from { opacity: 0; transform: translateX(20px); }
-        to { opacity: 1; transform: translateX(0); }
-      }
-
-      /* Tailwind config would have these animations */
-      /* In a real project, add this to tailwind.config.js:
-      theme: {
-        extend: {
-          animation: {
-            'fade-in': 'fadeIn 0.6s ease-out forwards',
-            'slide-up': 'slideUp 0.6s ease-out forwards',
-            'message-slide-left': 'messageSlideLeft 0.3s ease-out forwards',
-            'message-slide-right': 'messageSlideRight 0.3s ease-out forwards',
-          }
-        }
-      }
-      */
     </style>
   <script type="importmap">
 {

@@ -34,18 +34,18 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend, isLoading }) => {
 
   return (
     <div className="relative p-4">
-      <div className="relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 flex items-end p-2 gap-2">
+      <div className="relative bg-white/95 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-300 dark:border-slate-700 flex items-end p-2 gap-2">
         <textarea
           ref={textareaRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask a financial question..."
-          className="flex-1 bg-transparent p-2 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none resize-none max-h-48"
+          className="flex-1 bg-transparent p-2 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-500 focus:outline-none resize-none max-h-48"
           rows={1}
           disabled={isLoading}
         />
-        <div className="text-sm text-slate-400 dark:text-slate-500 hidden sm:block self-center pr-2">
+        <div className="text-sm text-slate-400 dark:text-slate-300 hidden sm:block self-center pr-2">
           ↵ to send
         </div>
         <button

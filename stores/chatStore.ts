@@ -9,6 +9,7 @@ interface ChatState {
   clearChat: () => void;
   setLoading: (loading: boolean) => void;
   generateMockResponse: (userMessage: string) => void;
+  loadHistory: (messages: Message[]) => void;
 }
 
 const generateId = () => Date.now().toString() + Math.random().toString(36).substring(2);
@@ -41,6 +42,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   },
   clearChat: () => set({ messages: [] }),
   setLoading: (loading) => set({ isLoading: loading }),
+  loadHistory: (messages) => set({ messages }),
   generateMockResponse: (userMessage: string) => {
     const userMsg: Message = {
         id: generateId(),

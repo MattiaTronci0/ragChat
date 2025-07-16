@@ -13,6 +13,7 @@ interface DocumentListProps {
 const DocumentList: React.FC<DocumentListProps> = ({ documents, onDelete }) => {
   const [docToDelete, setDocToDelete] = useState<string | null>(null);
   const [docToPreview, setDocToPreview] = useState<Document | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if (documents.length === 0) {
     return (
@@ -38,9 +39,20 @@ const DocumentList: React.FC<DocumentListProps> = ({ documents, onDelete }) => {
       </div>
       <ConfirmDialog
         isOpen={!!docToDelete}
-        onClose={() => setDocToDelete(null)}
-        onConfirm={() => {
-          if (docToDelete) onDelete(docToDelete);
+        onClose={() => !isDeleting && setDocToDelete(null)}
+        onConfirm={async () => {
+          if (docToDelete && !isDeleting) {
+            setIsDeleting(true);
+            try {
+              await onDelete(docToDelete);
+              setDocToDelete(null);
+            } catch (error) {
+              console.error('Failed to delete document:', error);
+              alert('Failed to delete document. Please try again.');
+            } finally {
+              setIsDeleting(false);
+            }
+          }
         }}
         title="Delete Document"
         message="Are you sure you want to delete this document? This action cannot be undone."

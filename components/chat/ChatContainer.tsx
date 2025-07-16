@@ -2,13 +2,16 @@
 import React, { useState } from 'react';
 import { useQueryClient, useMutation, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useChatStore } from '../../stores/chatStore';
+import { useHistoryStore } from '../../stores/historyStore';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import { BotIcon, SparklesIcon, Trash2Icon } from '../shared/Icons';
 import ConfirmDialog from '../shared/ConfirmDialog';
+import type { ChatHistory } from '../../types';
 
 const ChatContainer: React.FC = () => {
   const { messages, isLoading, generateMockResponse, clearChat } = useChatStore();
+  const { addHistory } = useHistoryStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const queryClient = useQueryClient();
@@ -32,14 +35,38 @@ const ChatContainer: React.FC = () => {
     mutation.mutate(message);
   };
   
+  const generateChatTitle = (messages: typeof messages): string => {
+    if (messages.length === 0) return 'New Chat';
+    
+    const firstUserMessage = messages.find(msg => msg.isUser)?.content || '';
+    const words = firstUserMessage.split(' ').slice(0, 4).join(' ');
+    return words.length > 0 ? words : 'New Chat';
+  };
+
+  const saveChatToHistory = () => {
+    if (messages.length === 0) return;
+    
+    const chatHistory: ChatHistory = {
+      id: `chat_${Date.now()}`,
+      title: generateChatTitle(messages),
+      messages: [...messages],
+      timestamp: new Date()
+    };
+    
+    addHistory(chatHistory);
+  };
+
   const handleClearChat = () => {
+    if (messages.length > 0) {
+      saveChatToHistory();
+    }
     clearChat();
     setIsConfirmOpen(false);
   }
 
   return (
-    <div className="flex flex-col h-full bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl m-4 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-      <header className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+    <div className="flex flex-col h-full bg-white/90 dark:bg-slate-900/50 backdrop-blur-xl m-4 rounded-2xl shadow-lg border border-slate-300 dark:border-slate-800 overflow-hidden">
+      <header className="flex items-center justify-between p-4 border-b border-slate-300 dark:border-slate-800">
         <div className="flex items-center gap-3">
           <div className="relative">
             <BotIcon className="w-8 h-8 text-emerald-500" />

@@ -5,12 +5,12 @@ import ThemeToggle from './ThemeToggle';
 import { CalculatorIcon, SparklesIcon, MessageSquareIcon, FolderKanbanIcon, HistoryIcon } from '../shared/Icons';
 
 const navItems = [
-  { to: '/', text: 'Chat', icon: MessageSquareIcon, gradient: 'from-blue-500 to-purple-600' },
-  { to: '/documents', text: 'Documents', icon: FolderKanbanIcon, gradient: 'from-emerald-500 to-teal-600' },
-  { to: '/history', text: 'History', icon: HistoryIcon, gradient: 'from-orange-500 to-red-600' },
+  { to: '/', text: 'Chat', icon: MessageSquareIcon, gradient: 'from-blue-500 to-purple-600', lightGradient: 'from-blue-600 to-purple-700' },
+  { to: '/documents', text: 'Documents', icon: FolderKanbanIcon, gradient: 'from-emerald-500 to-teal-600', lightGradient: 'from-emerald-600 to-teal-700' },
+  { to: '/history', text: 'History', icon: HistoryIcon, gradient: 'from-orange-500 to-red-600', lightGradient: 'from-orange-600 to-red-700' },
 ];
 
-const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, icon: Icon, gradient, delay }) => {
+const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, icon: Icon, gradient, lightGradient, delay }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const isActive = location.pathname === to;
@@ -20,8 +20,8 @@ const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, i
             <button
                 onClick={() => navigate(to)}
                 className={
-                    `w-full flex items-center p-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl ${gradient} ${
-                        isActive ? 'scale-105 shadow-xl ring-2 ring-white/50' : 'shadow-md'
+                    `w-full flex items-center p-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl bg-gradient-to-br dark:${gradient} ${lightGradient} ${
+                        isActive ? 'scale-105 shadow-xl ring-2 ring-white/30 dark:ring-white/50' : 'shadow-md'
                     }`
                 }
             >
@@ -35,7 +35,7 @@ const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, i
 
 const Sidebar: React.FC = () => {
   return (
-    <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 shadow-2xl">
+    <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl border-r border-slate-300 dark:border-slate-800 shadow-2xl">
       <div className="flex items-center gap-3 mb-10">
         <div className="relative">
             <CalculatorIcon className="w-12 h-12 text-slate-800 dark:text-white" />
@@ -58,7 +58,7 @@ const Sidebar: React.FC = () => {
         <div className="flex justify-center mb-4">
           <ThemeToggle />
         </div>
-        <p className="text-center text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-center text-xs text-slate-600 dark:text-slate-300">
           Powered by Advanced AI
         </p>
       </div>

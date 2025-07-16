@@ -1,0 +1,171 @@
+/* Global styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes messageSlideLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes messageSlideRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Animation classes with forwards fill mode */
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5); /* gray-400 with 50% opacity */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.5); /* gray-500 with 50% opacity */
+}
+
+/* Ensure elements stay visible */
+.animate-slide-up {
+  opacity: 1 !important;
+}
+
+.animate-fade-in {
+  opacity: 1 !important;
+}
+
+/* Enhanced light mode colors */
+:root {
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+}
+
+/* Better text contrast in light mode */
+.text-slate-800 {
+  color: #1e293b !important;
+}
+
+.text-slate-900 {
+  color: #0f172a !important;
+}
+
+/* Better border visibility in light mode */
+.border-slate-300 {
+  border-color: #cbd5e1 !important;
+}
+
+.border-slate-400 {
+  border-color: #94a3b8 !important;
+}
+
+/* Enhanced dark mode text contrast - much brighter with higher specificity */
+html.dark .text-slate-100,
+.dark .text-slate-100,
+html.dark *[class*="text-slate-100"],
+.dark *[class*="text-slate-100"] {
+  color: #ffffff !important;
+}
+
+html.dark .text-slate-200,
+.dark .text-slate-200,
+html.dark *[class*="text-slate-200"],
+.dark *[class*="text-slate-200"] {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-300,
+.dark .text-slate-300,
+html.dark *[class*="text-slate-300"],
+.dark *[class*="text-slate-300"] {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-400,
+.dark .text-slate-400,
+html.dark *[class*="text-slate-400"],
+.dark *[class*="text-slate-400"] {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-500,
+.dark .text-slate-500,
+html.dark *[class*="text-slate-500"],
+.dark *[class*="text-slate-500"] {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600,
+.dark .text-slate-600,
+html.dark *[class*="text-slate-600"],
+.dark *[class*="text-slate-600"] {
+  color: #f1f5f9 !important;
+}
+
+/* Force brighter icons in dark mode */
+.dark .text-slate-400 svg,
+.dark .text-slate-500 svg {
+  color: #e2e8f0 !important;
+}
+
+/* Additional dark mode overrides for better visibility */
+.dark p[class*="text-slate-100"],
+.dark h1[class*="text-slate-100"],
+.dark h2[class*="text-slate-100"],
+.dark h3[class*="text-slate-100"],
+.dark span[class*="text-slate-100"],
+.dark div[class*="text-slate-100"] {
+  color: #ffffff !important;
+}
+
+/* Ensure all Tailwind dark mode text classes work */
+.dark {
+  --tw-text-slate-100: #ffffff;
+  --tw-text-slate-200: #f8fafc;
+  --tw-text-slate-300: #f1f5f9;
+  --tw-text-slate-400: #e2e8f0;
+  --tw-text-slate-500: #cbd5e1;
+}
+
+/* Better placeholder contrast */
+.dark .placeholder-slate-500::placeholder {
+  color: #94a3b8 !important;
+}
+
+.placeholder-slate-500::placeholder {
+  color: #64748b !important;
+}
