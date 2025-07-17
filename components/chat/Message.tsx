@@ -30,7 +30,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
           {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} {!isUser && " - AI"}
         </div>
          {/* Message Tail */}
-        <div className={`absolute bottom-0 w-4 h-4 ${
+        <div className={`absolute bottom-3 w-4 h-4 ${
             isUser 
             ? 'right-[-7px] bg-purple-600' 
             : 'left-[-7px] bg-white dark:bg-slate-700'

@@ -5,7 +5,6 @@ import DocumentUpload from './DocumentUpload';
 import DocumentList from './DocumentList';
 import DocumentSearch from './DocumentSearch';
 import CategoryFilter from './CategoryFilter';
-import DirectoryPicker from './DirectoryPicker';
 import { FolderKanbanIcon } from '../shared/Icons';
 
 const DocumentManager: React.FC = () => {
@@ -21,19 +20,16 @@ const DocumentManager: React.FC = () => {
               Document Hub
             </h1>
         </div>
-        <p className="text-slate-600 dark:text-slate-300 mt-1">Upload, manage, and analyze your financial documents.</p>
+        <p className="text-slate-600 dark:text-slate-300 mt-1">Upload documents to VPS for n8n processing and vector database integration.</p>
       </header>
       
       <div className="flex flex-col lg:flex-row gap-6 flex-grow overflow-hidden">
         {/* Left column for upload and controls */}
         <div className="w-full lg:w-1/3 xl:w-1/4 flex-shrink-0 flex flex-col gap-6">
             <div className="animate-slide-up [animation-delay:100ms]">
-                <DirectoryPicker />
-            </div>
-            <div className="animate-slide-up [animation-delay:150ms]">
                 <DocumentUpload />
             </div>
-             <div className="flex flex-col sm:flex-row lg:flex-col gap-4 animate-slide-up [animation-delay:200ms]">
+             <div className="flex flex-col sm:flex-row lg:flex-col gap-4 animate-slide-up [animation-delay:150ms]">
                 <DocumentSearch />
                 <CategoryFilter />
             </div>

@@ -8,13 +8,21 @@ import {
   FileSpreadsheetIcon,
   EyeIcon,
   DownloadIcon,
-  Trash2Icon
+  Trash2Icon,
+  CheckCircleIcon,
+  AlertCircleIcon
 } from '../shared/Icons';
+import LoadingSpinner from '../shared/LoadingSpinner';
+
+interface DocumentWithStatus extends Document {
+  status: 'uploading' | 'processing' | 'indexed' | 'ready' | 'error';
+  processingMessage?: string;
+}
 
 interface DocumentCardProps {
-  document: Document;
+  document: DocumentWithStatus;
   onDelete: (id: string) => void;
-  onPreview: (doc: Document) => void;
+  onPreview: (doc: DocumentWithStatus) => void;
 }
 
 const categoryColorMap: { [key: string]: string } = {
@@ -37,6 +45,36 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
   const { categories, getFileContent } = useDocumentStore();
   const categoryInfo = categories.find(c => c.name === document.category);
   const colorClass = categoryInfo ? categoryColorMap[categoryInfo.color] : categoryColorMap['gray'];
+
+  const getStatusIcon = () => {
+    switch (document.status) {
+      case 'processing':
+      case 'indexed':
+        return <LoadingSpinner size={16} />;
+      case 'ready':
+        return <CheckCircleIcon className="w-4 h-4 text-green-500" />;
+      case 'error':
+        return <AlertCircleIcon className="w-4 h-4 text-red-500" />;
+      default:
+        return null;
+    }
+  };
+
+  const getStatusColor = () => {
+    switch (document.status) {
+      case 'processing':
+      case 'indexed':
+        return 'text-blue-600 dark:text-blue-400';
+      case 'ready':
+        return 'text-green-600 dark:text-green-400';
+      case 'error':
+        return 'text-red-600 dark:text-red-400';
+      default:
+        return 'text-slate-600 dark:text-slate-400';
+    }
+  };
+
+  const isActionDisabled = document.status !== 'ready';
 
   const formatBytes = (bytes: number, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
@@ -97,10 +135,21 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
       <div className="flex items-start gap-4">
         <div className="text-slate-500 dark:text-slate-400">{getFileIcon(document.type)}</div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-slate-900 dark:text-slate-100 truncate" title={document.name}>{document.name}</p>
+          <div className="flex items-center gap-2">
+            <p className="font-semibold text-slate-900 dark:text-slate-100 truncate" title={document.name}>{document.name}</p>
+            {getStatusIcon()}
+          </div>
           <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
             {formatBytes(document.size)} - {document.uploadDate.toLocaleDateString()}
           </p>
+          {document.status !== 'ready' && (
+            <p className={`text-xs mt-1 ${getStatusColor()}`}>
+              {document.processingMessage || 
+                (document.status === 'processing' ? 'Processing with n8n...' : 
+                 document.status === 'indexed' ? 'Indexing...' : 
+                 document.status === 'error' ? 'Processing failed' : 'Uploading...')}
+            </p>
+          )}
         </div>
       </div>
       <div className="mt-4 flex-grow">
@@ -109,9 +158,37 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
         </span>
       </div>
       <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700/50 flex justify-end items-center gap-2">
-        <button onClick={handlePreview} className="p-2 text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 rounded-full transition-colors" title="Preview"><EyeIcon className="w-5 h-5"/></button>
-        <button onClick={handleDownload} className="p-2 text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700 rounded-full transition-colors" title="Download"><DownloadIcon className="w-5 h-5"/></button>
-        <button onClick={handleDelete} className="p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-full transition-colors" title="Delete"><Trash2Icon className="w-5 h-5"/></button>
+        <button 
+          onClick={handlePreview} 
+          disabled={isActionDisabled}
+          className={`p-2 rounded-full transition-colors ${
+            isActionDisabled 
+              ? 'text-slate-400 dark:text-slate-600 cursor-not-allowed' 
+              : 'text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`} 
+          title={isActionDisabled ? 'Available when processing is complete' : 'Preview'}
+        >
+          <EyeIcon className="w-5 h-5"/>
+        </button>
+        <button 
+          onClick={handleDownload} 
+          disabled={isActionDisabled}
+          className={`p-2 rounded-full transition-colors ${
+            isActionDisabled 
+              ? 'text-slate-400 dark:text-slate-600 cursor-not-allowed' 
+              : 'text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`} 
+          title={isActionDisabled ? 'Available when processing is complete' : 'Download'}
+        >
+          <DownloadIcon className="w-5 h-5"/>
+        </button>
+        <button 
+          onClick={handleDelete} 
+          className="p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-full transition-colors" 
+          title="Delete"
+        >
+          <Trash2Icon className="w-5 h-5"/>
+        </button>
       </div>
     </div>
   );

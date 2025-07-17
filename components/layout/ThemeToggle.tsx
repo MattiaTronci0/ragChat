@@ -18,8 +18,8 @@ const ThemeToggle: React.FC = () => {
           theme === 'dark' ? 'translate-x-6' : 'translate-x-0'
         }`}
       >
-        <SunIcon className={`w-4 h-4 m-1 text-yellow-500 transition-opacity duration-300 ${theme === 'light' ? 'opacity-100' : 'opacity-0'}`} />
-        <MoonIcon className={`w-4 h-4 m-1 text-slate-300 transition-opacity duration-300 ${theme === 'dark' ? 'opacity-100' : 'opacity-0'}`} />
+        <SunIcon className={`absolute w-4 h-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-yellow-500 transition-opacity duration-300 ${theme === 'light' ? 'opacity-100' : 'opacity-0'}`} />
+        <MoonIcon className={`absolute w-4 h-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-slate-300 transition-opacity duration-300 ${theme === 'dark' ? 'opacity-100' : 'opacity-0'}`} />
       </div>
     </button>
   );
