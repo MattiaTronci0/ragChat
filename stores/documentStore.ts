@@ -70,8 +70,8 @@ export const useDocumentStore = create<DocumentState>()(
         }));
 
         try {
-          // Use mock API for development - replace with real API call
-          const result = await DocumentAPI.mockUploadDocument(file, category);
+          // Use real API for file upload
+          const result = await DocumentAPI.uploadDocument(file, category);
           
           // Remove from uploading documents
           set(state => {
@@ -161,8 +161,8 @@ export const useDocumentStore = create<DocumentState>()(
         set({ isLoading: true });
         
         try {
-          // Use mock API for development - replace with real API call
-          const processedDocs = await DocumentAPI.mockGetDocuments();
+          // Use real API for document list
+          const processedDocs = await DocumentAPI.getDocuments();
           
           const documents: DocumentWithStatus[] = processedDocs.map(doc => ({
             id: doc.id,
@@ -192,7 +192,7 @@ export const useDocumentStore = create<DocumentState>()(
 
       refreshDocumentStatus: async (id) => {
         try {
-          const status = await DocumentAPI.mockGetDocumentStatus(id);
+          const status = await DocumentAPI.getDocumentStatus(id);
           
           if (status) {
             set(state => ({

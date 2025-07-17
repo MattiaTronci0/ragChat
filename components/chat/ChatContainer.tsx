@@ -10,7 +10,7 @@ import ConfirmDialog from '../shared/ConfirmDialog';
 import type { ChatHistory } from '../../types';
 
 const ChatContainer: React.FC = () => {
-  const { messages, isLoading, generateMockResponse, clearChat } = useChatStore();
+  const { messages, isLoading, sendMessage, clearChat } = useChatStore();
   const { addHistory } = useHistoryStore();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
@@ -18,12 +18,8 @@ const ChatContainer: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async (newMessage: string) => {
-      // In a real app, this would be an API call.
-      // We are using the Zustand store's mock generator.
-      return new Promise<void>(resolve => {
-        generateMockResponse(newMessage);
-        resolve();
-      });
+      // Use the new sendMessage method that calls the real API
+      await sendMessage(newMessage);
     },
     onSuccess: () => {
       // Invalidate and refetch, etc. if needed

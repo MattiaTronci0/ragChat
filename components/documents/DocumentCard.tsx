@@ -140,7 +140,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
             {getStatusIcon()}
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
-            {formatBytes(document.size)} - {document.uploadDate.toLocaleDateString()}
+            {formatBytes(document.size)} - {document.uploadDate instanceof Date ? document.uploadDate.toLocaleDateString() : new Date(document.uploadDate).toLocaleDateString()}
           </p>
           {document.status !== 'ready' && (
             <p className={`text-xs mt-1 ${getStatusColor()}`}>
