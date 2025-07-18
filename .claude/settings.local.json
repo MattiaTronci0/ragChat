@@ -13,7 +13,12 @@
       "Bash(npm run build:*)",
       "Bash(npm run dev:*)",
       "Bash(chmod:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)",
+      "Bash(curl:*)",
+      "Bash(docker exec:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }
