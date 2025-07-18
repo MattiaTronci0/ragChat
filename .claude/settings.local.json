@@ -18,7 +18,12 @@
       "Bash(docker logs:*)",
       "Bash(curl:*)",
       "Bash(docker exec:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(hostname)",
+      "Bash(docker compose:*)",
+      "Bash(npm install:*)"
     ],
     "deny": []
   }

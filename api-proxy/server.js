@@ -4,9 +4,13 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const multer = require('multer');
 const { body, validationResult } = require('express-validator');
+const FormData = require('form-data');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
+
+// Trust proxy for proper IP detection behind nginx
+app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet());
@@ -157,12 +161,16 @@ app.post('/api/documents/upload',
 
       // Step 1: Upload to AnythingLLM
       const formData = new FormData();
-      formData.append('file', new Blob([req.file.buffer], { type: req.file.mimetype }), req.file.originalname);
+      formData.append('file', req.file.buffer, {
+        filename: req.file.originalname,
+        contentType: req.file.mimetype
+      });
 
-      const uploadResponse = await fetch(`${ANYTHINGLLM_BASE_URL}/api/system/upload-document`, {
+      const uploadResponse = await fetch(`${ANYTHINGLLM_BASE_URL}/api/v1/system/upload-document`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${ANYTHINGLLM_API_KEY}`,
+          ...formData.getHeaders()
         },
         body: formData,
       });
@@ -174,7 +182,7 @@ app.post('/api/documents/upload',
       const uploadResult = await uploadResponse.json();
 
       // Step 2: Add to workspace
-      await makeAnythingLLMRequest(`/api/workspace/${ANYTHINGLLM_WORKSPACE}/update-embeddings`, {
+      await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}/update-embeddings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -208,7 +216,7 @@ app.post('/api/documents/upload',
 // Get documents endpoint
 app.get('/api/documents', validateApiKey, async (req, res) => {
   try {
-    const workspaceData = await makeAnythingLLMRequest(`/api/workspace/${ANYTHINGLLM_WORKSPACE}`);
+    const workspaceData = await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}`);
     const documents = workspaceData.workspace?.documents || [];
     
     const processedDocuments = documents.map(doc => ({
@@ -238,7 +246,7 @@ app.get('/api/documents/:id/status', validateApiKey, async (req, res) => {
   try {
     const { id } = req.params;
     
-    const workspaceData = await makeAnythingLLMRequest(`/api/workspace/${ANYTHINGLLM_WORKSPACE}`);
+    const workspaceData = await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}`);
     const documents = workspaceData.workspace?.documents || [];
     
     const document = documents.find(doc => doc.filename === id);
@@ -317,14 +325,14 @@ app.post('/api/chat',
       const { message, sessionId } = req.body;
       const chatSessionId = sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2)}`;
 
-      const chatResponse = await makeAnythingLLMRequest(`/api/workspace/${ANYTHINGLLM_WORKSPACE}/chat`, {
+      const chatResponse = await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           message: message,
-          mode: 'query',
+          mode: 'chat',
           sessionId: chatSessionId
         })
       });
