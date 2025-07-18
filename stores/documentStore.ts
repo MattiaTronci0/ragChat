@@ -20,13 +20,19 @@ interface DocumentWithStatus extends Document {
   processingMessage?: string;
 }
 
+interface UploadingDocument {
+  progress: number;
+  file: File;
+  category: string;
+}
+
 interface DocumentState {
   documents: DocumentWithStatus[];
   searchTerm: string;
   selectedCategory: string;
   categories: DocumentCategory[];
   isLoading: boolean;
-  uploadingDocuments: Map<string, { progress: number; file: File; category: string }>;
+  uploadingDocuments: Record<string, UploadingDocument>;
   
   // Actions
   addDocument: (file: File, category: string) => Promise<boolean>;
@@ -44,8 +50,40 @@ interface DocumentState {
   clearAllPolling: () => void;
 }
 
-// Status polling management
-const statusPollingIntervals = new Map<string, NodeJS.Timeout>();
+// Status polling management - moved outside of store to prevent memory leaks
+class PollingManager {
+  private intervals = new Map<string, NodeJS.Timeout>();
+  
+  start(documentId: string, callback: () => Promise<void>) {
+    this.stop(documentId);
+    
+    const interval = setInterval(async () => {
+      try {
+        await callback();
+      } catch (error) {
+        console.error('Polling error:', error);
+        this.stop(documentId);
+      }
+    }, 3000);
+    
+    this.intervals.set(documentId, interval);
+  }
+  
+  stop(documentId: string) {
+    const interval = this.intervals.get(documentId);
+    if (interval) {
+      clearInterval(interval);
+      this.intervals.delete(documentId);
+    }
+  }
+  
+  clear() {
+    this.intervals.forEach(interval => clearInterval(interval));
+    this.intervals.clear();
+  }
+}
+
+const pollingManager = new PollingManager();
 
 export const useDocumentStore = create<DocumentState>()(
   persist(
@@ -55,18 +93,21 @@ export const useDocumentStore = create<DocumentState>()(
       selectedCategory: 'all',
       categories: CATEGORIES,
       isLoading: false,
-      uploadingDocuments: new Map(),
+      uploadingDocuments: {},
 
       addDocument: async (file, category) => {
         const tempId = generateId();
         
         // Add to uploading documents
         set(state => ({
-          uploadingDocuments: new Map(state.uploadingDocuments).set(tempId, {
-            progress: 0,
-            file,
-            category
-          })
+          uploadingDocuments: {
+            ...state.uploadingDocuments,
+            [tempId]: {
+              progress: 0,
+              file,
+              category
+            }
+          }
         }));
 
         try {
@@ -75,9 +116,8 @@ export const useDocumentStore = create<DocumentState>()(
           
           // Remove from uploading documents
           set(state => {
-            const newUploading = new Map(state.uploadingDocuments);
-            newUploading.delete(tempId);
-            return { uploadingDocuments: newUploading };
+            const { [tempId]: removed, ...uploadingDocuments } = state.uploadingDocuments;
+            return { uploadingDocuments };
           });
 
           if (result.success && result.documentId) {
@@ -108,9 +148,8 @@ export const useDocumentStore = create<DocumentState>()(
         } catch (error) {
           // Remove from uploading documents on error
           set(state => {
-            const newUploading = new Map(state.uploadingDocuments);
-            newUploading.delete(tempId);
-            return { uploadingDocuments: newUploading };
+            const { [tempId]: removed, ...uploadingDocuments } = state.uploadingDocuments;
+            return { uploadingDocuments };
           });
           
           console.error('Upload error:', error);
@@ -234,27 +273,15 @@ export const useDocumentStore = create<DocumentState>()(
       },
 
       startStatusPolling: (documentId) => {
-        // Clear existing interval if any
-        get().stopStatusPolling(documentId);
-        
-        const interval = setInterval(async () => {
-          await get().refreshDocumentStatus(documentId);
-        }, 3000); // Poll every 3 seconds
-        
-        statusPollingIntervals.set(documentId, interval);
+        pollingManager.start(documentId, () => get().refreshDocumentStatus(documentId));
       },
 
       stopStatusPolling: (documentId) => {
-        const interval = statusPollingIntervals.get(documentId);
-        if (interval) {
-          clearInterval(interval);
-          statusPollingIntervals.delete(documentId);
-        }
+        pollingManager.stop(documentId);
       },
 
       clearAllPolling: () => {
-        statusPollingIntervals.forEach((interval) => clearInterval(interval));
-        statusPollingIntervals.clear();
+        pollingManager.clear();
       }
     }),
     {
@@ -262,6 +289,7 @@ export const useDocumentStore = create<DocumentState>()(
       partialize: (state) => ({
         documents: state.documents,
         selectedCategory: state.selectedCategory,
+        // Don't persist uploadingDocuments to avoid memory issues
       }),
     }
   )
@@ -281,7 +309,18 @@ const initializeStore = async () => {
 if (typeof window !== 'undefined') {
   initializeStore();
   
-  window.addEventListener('beforeunload', () => {
+  // Multiple cleanup event listeners for better reliability
+  const cleanup = () => {
     useDocumentStore.getState().clearAllPolling();
+  };
+  
+  window.addEventListener('beforeunload', cleanup);
+  window.addEventListener('unload', cleanup);
+  
+  // Cleanup on page visibility change (when tab is hidden)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      cleanup();
+    }
   });
 }

@@ -28,35 +28,76 @@ export interface ProcessedDocument {
 }
 
 export class DocumentAPI {
-  private static readonly BASE_URL = 'http://localhost:3001/api/documents';
-  private static readonly USE_MOCK = process.env.NODE_ENV === 'development';
+  private static readonly BASE_URL = '/api';
+  private static readonly USE_MOCK = import.meta.env.NODE_ENV === 'development';
+
+  private static getHeaders(): HeadersInit {
+    return {
+      'Accept': 'application/json',
+    };
+  }
 
   static async uploadDocument(file: File, category: string): Promise<UploadResponse> {
     if (this.USE_MOCK) {
       return this.mockUploadDocument(file, category);
     }
 
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('category', category);
-      formData.append('uploadDate', new Date().toISOString());
-
-      const response = await fetch(`${this.BASE_URL}/upload`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Upload failed: ${response.status}`);
-      }
-
-      const result = await response.json();
-      return result;
-    } catch (error) {
-      console.error('Upload error, falling back to mock:', error);
-      return this.mockUploadDocument(file, category);
+    // Validate file size (100MB limit)
+    if (file.size > 100 * 1024 * 1024) {
+      return {
+        success: false,
+        error: 'File too large. Maximum size is 100MB.'
+      };
     }
+
+    // Validate file type
+    const allowedTypes = /\.(pdf|doc|docx|txt|xlsx|xls|png|jpg|jpeg|gif|csv|json|xml|html|md|rtf)$/i;
+    if (!allowedTypes.test(file.name)) {
+      return {
+        success: false,
+        error: 'Invalid file type. Only documents and images are allowed.'
+      };
+    }
+
+    const maxRetries = 3;
+    let lastError;
+
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('category', category);
+
+        const response = await fetch(`${this.BASE_URL}/documents/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Upload failed: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        lastError = error;
+        
+        // Don't retry on client errors or validation errors
+        if (error.message.includes('Invalid file') || error.message.includes('File too large')) {
+          break;
+        }
+        
+        // Retry on network errors
+        if (i < maxRetries - 1) {
+          await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
+          continue;
+        }
+      }
+    }
+
+    console.error('Upload error, falling back to mock:', lastError);
+    return this.mockUploadDocument(file, category);
   }
 
   static async getDocumentStatus(documentId: string): Promise<DocumentStatus | null> {
@@ -65,7 +106,10 @@ export class DocumentAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/status/${documentId}`);
+      const response = await fetch(`${this.BASE_URL}/documents/${documentId}/status`, {
+        method: 'GET',
+        headers: this.getHeaders(),
+      });
       
       if (!response.ok) {
         throw new Error(`Status check failed: ${response.status}`);
@@ -84,7 +128,10 @@ export class DocumentAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/list`);
+      const response = await fetch(`${this.BASE_URL}/documents`, {
+        method: 'GET',
+        headers: this.getHeaders(),
+      });
       
       if (!response.ok) {
         throw new Error(`Failed to fetch documents: ${response.status}`);
@@ -105,8 +152,9 @@ export class DocumentAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/${documentId}`, {
+      const response = await fetch(`${this.BASE_URL}/documents/${documentId}`, {
         method: 'DELETE',
+        headers: this.getHeaders(),
       });
 
       return response.ok;
@@ -123,13 +171,22 @@ export class DocumentAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/${documentId}/download`);
+      // AnythingLLM doesn't provide direct document download, 
+      // so we'll return a simple text representation
+      const response = await fetch(`${this.BASE_URL}/system/local-files`, {
+        method: 'GET',
+        headers: this.getHeaders(),
+      });
       
       if (!response.ok) {
         throw new Error(`Download failed: ${response.status}`);
       }
 
-      return await response.blob();
+      // This is a simplified approach - in practice, you might want to 
+      // extract text content from the document for download
+      return new Blob([`Document: ${filename}\nContent available through chat interface only.`], { 
+        type: 'text/plain' 
+      });
     } catch (error) {
       console.error('Download error, falling back to mock:', error);
       return new Blob(['Mock file content'], { type: 'text/plain' });
@@ -215,8 +272,15 @@ export interface ChatMessage {
 }
 
 export class ChatAPI {
-  private static readonly N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://danielmontese.app.n8n.cloud/webhook/82b152e2-4646-4ff8-aa00-1bf884fed35a';
-  private static readonly USE_MOCK = !import.meta.env.VITE_USE_REAL_CHAT;
+  private static readonly BASE_URL = '/api';
+  private static readonly USE_MOCK = import.meta.env.NODE_ENV === 'development';
+
+  private static getHeaders(): HeadersInit {
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+  }
 
   static async sendMessage(message: string, sessionId?: string): Promise<ChatResponse> {
     if (this.USE_MOCK) {
@@ -224,42 +288,23 @@ export class ChatAPI {
     }
 
     try {
-      // Generate session ID if not provided
-      const chatSessionId = sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2)}`;
-
-      // Prepare request to n8n webhook
-      const n8nPayload = {
-        message: message,
-        session_id: chatSessionId
-      };
-
-      console.log(`Sending chat request to n8n: ${message.substring(0, 100)}...`);
-
-      // Make request to n8n webhook directly
-      const response = await fetch(this.N8N_WEBHOOK_URL, {
+      const response = await fetch(`${this.BASE_URL}/chat`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(n8nPayload),
+        headers: this.getHeaders(),
+        body: JSON.stringify({
+          message: message,
+          sessionId: sessionId
+        }),
       });
 
       if (!response.ok) {
-        throw new Error(`n8n webhook responded with status: ${response.status}`);
+        throw new Error(`Chat API responded with status: ${response.status}`);
       }
 
-      const n8nResponse = await response.json();
-      
-      // Extract the output from n8n response
-      const aiResponse = n8nResponse.output || n8nResponse.message || 'Sorry, I could not process your request.';
-
-      return {
-        success: true,
-        response: aiResponse,
-        sessionId: chatSessionId
-      };
+      const result = await response.json();
+      return result;
     } catch (error) {
-      console.error('n8n API error, falling back to mock:', error);
+      console.error('Chat API error, falling back to mock:', error);
       return this.mockSendMessage(message, sessionId);
     }
   }

@@ -29,3 +29,63 @@ export interface DocumentCategory {
   name: string;
   color: string; // Tailwind color class e.g., 'blue'
 }
+
+// AnythingLLM specific interfaces
+export interface AnythingLLMWorkspace {
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  lastUpdatedAt: string;
+  documents: AnythingLLMDocument[];
+}
+
+export interface AnythingLLMDocument {
+  id: string;
+  filename: string;
+  title: string;
+  mime: string;
+  size: number;
+  cached: boolean;
+  metadata?: {
+    category?: string;
+    uploadDate?: string;
+  };
+  createdAt: string;
+  url?: string;
+}
+
+export interface AnythingLLMChatResponse {
+  textResponse: string;
+  id: string;
+  type: 'abort' | 'textResponse';
+  sources: Array<{
+    title: string;
+    chunk: string;
+    score: number;
+  }>;
+  close: boolean;
+  error?: string;
+}
+
+export interface AnythingLLMUploadResponse {
+  success: boolean;
+  filename: string;
+  reason?: string;
+  error?: string;
+}
+
+export interface AnythingLLMWorkspaceResponse {
+  workspace: AnythingLLMWorkspace;
+  message?: string;
+  error?: string;
+}
+
+export interface AnythingLLMSystemInfo {
+  version: string;
+  storage: {
+    used: number;
+    total: number;
+  };
+  supportedFileTypes: string[];
+}

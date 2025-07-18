@@ -2,89 +2,57 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ragchat-frontend
     restart: unless-stopped
-    networks:
-      - ragchat-network
-    depends_on:
-      - backend
-    labels:
-      - "com.ragchat.service=frontend"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: ragchat-backend
+  api-proxy:
     restart: unless-stopped
-    volumes:
-      - uploads-data:/app/uploads
-      - metadata-data:/app/metadata
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - GOOGLE_DRIVE_FOLDER_ID=${GOOGLE_DRIVE_FOLDER_ID}
-      - GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
-      - GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
-    networks:
-      - ragchat-network
-    labels:
-      - "com.ragchat.service=backend"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  anythingllm:
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
 
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: ragchat-nginx
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - ragchat-network
-    labels:
-      - "com.ragchat.service=proxy"
-
-  # Optional: n8n service for document processing
-  n8n:
-    image: n8nio/n8n:latest
-    container_name: ragchat-n8n
-    restart: unless-stopped
-    ports:
-      - "5678:5678"
-    volumes:
-      - n8n-data:/home/node/.n8n
-      - uploads-data:/data/uploads:ro
-    environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=${N8N_AUTH_USER:-admin}
-      - N8N_BASIC_AUTH_PASSWORD=${N8N_AUTH_PASSWORD}
-      - N8N_HOST=0.0.0.0
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=http
-      - NODE_ENV=production
-    networks:
-      - ragchat-network
-    labels:
-      - "com.ragchat.service=n8n"
-
-volumes:
-  uploads-data:
-    driver: local
-  metadata-data:
-    driver: local
-  n8n-data:
-    driver: local
-
-networks:
-  ragchat-network:
-    driver: bridge
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M

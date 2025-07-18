@@ -4,7 +4,15 @@
       "Bash(rm:*)",
       "Bash(mv:*)",
       "Bash(mkdir:*)",
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "WebFetch(domain:docs.anythingllm.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.useanything.com)",
+      "WebFetch(domain:deepwiki.com)",
+      "Bash(docker-compose:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(chmod:*)"
     ],
     "deny": []
   }
