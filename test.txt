@@ -1,0 +1,2 @@
+This is a test document for upload functionality.
+Testing AnythingLLM document processing.

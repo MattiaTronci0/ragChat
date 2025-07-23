@@ -5,6 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - VITE_ANYTHINGLLM_URL=${VITE_ANYTHINGLLM_URL:-http://localhost:3001/api/v1}
+        - VITE_ANYTHINGLLM_API_KEY=${ANYTHINGLLM_API_KEY}
+        - VITE_ANYTHINGLLM_WORKSPACE=${ANYTHINGLLM_WORKSPACE}
     environment:
       - NODE_ENV=production
     depends_on:
@@ -26,7 +30,7 @@ services:
       - NODE_ENV=production
       - PORT=3002
       - ANYTHINGLLM_BASE_URL=http://anythingllm:3001
-      - ANYTHINGLLM_API_KEY=${ANYTHINGLLM_API_KEY}
+      - ANYTHINGLLM_API_KEY=ETVXYEN-K9CMYY4-K3X6WRJ-XSS8SXQ
       - ANYTHINGLLM_WORKSPACE=${ANYTHINGLLM_WORKSPACE}
       - FRONTEND_URL=http://localhost
     depends_on:

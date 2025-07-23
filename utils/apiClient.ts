@@ -28,12 +28,15 @@ export interface ProcessedDocument {
 }
 
 export class DocumentAPI {
-  private static readonly BASE_URL = '/api';
-  private static readonly USE_MOCK = import.meta.env.NODE_ENV === 'development';
+  private static readonly BASE_URL = import.meta.env.VITE_ANYTHINGLLM_URL || 'http://localhost:3001/api/v1';
+  private static readonly API_KEY = import.meta.env.VITE_ANYTHINGLLM_API_KEY || 'ETVXYEN-K9CMYY4-K3X6WRJ-XSS8SXQ';
+  private static readonly WORKSPACE = import.meta.env.VITE_ANYTHINGLLM_WORKSPACE || 'prova';
+  private static readonly USE_MOCK = false;
 
   private static getHeaders(): HeadersInit {
     return {
-      'Accept': 'application/json',
+      'Authorization': `Bearer ${this.API_KEY}`,
+      'Accept': 'application/json'
     };
   }
 
@@ -66,10 +69,13 @@ export class DocumentAPI {
       try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('category', category);
+        formData.append('addToWorkspaces', this.WORKSPACE);
 
-        const response = await fetch(`${this.BASE_URL}/documents/upload`, {
+        const response = await fetch(`${this.BASE_URL}/document/upload`, {
           method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${this.API_KEY}`
+          },
           body: formData,
         });
 
@@ -79,7 +85,11 @@ export class DocumentAPI {
         }
 
         const result = await response.json();
-        return result;
+        return {
+          success: result.success,
+          documentId: result.documents?.[0]?.id,
+          message: 'Document uploaded successfully'
+        };
       } catch (error) {
         lastError = error;
         
@@ -106,7 +116,7 @@ export class DocumentAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/documents/${documentId}/status`, {
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}`, {
         method: 'GET',
         headers: this.getHeaders(),
       });
@@ -115,7 +125,18 @@ export class DocumentAPI {
         throw new Error(`Status check failed: ${response.status}`);
       }
 
-      return await response.json();
+      const data = await response.json();
+      const documents = data.workspace?.[0]?.documents || [];
+      const document = documents.find(doc => doc.docpath && doc.docpath.includes(documentId));
+      
+      if (!document) return null;
+      
+      return {
+        id: documentId,
+        status: document.cached ? 'ready' : 'processing',
+        progress: document.cached ? 100 : 50,
+        message: document.cached ? 'Document ready for querying' : 'Processing document...'
+      };
     } catch (error) {
       console.error('Status check error, falling back to mock:', error);
       return this.mockGetDocumentStatus(documentId);
@@ -128,7 +149,7 @@ export class DocumentAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/documents`, {
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}`, {
         method: 'GET',
         headers: this.getHeaders(),
       });
@@ -137,8 +158,18 @@ export class DocumentAPI {
         throw new Error(`Failed to fetch documents: ${response.status}`);
       }
 
-      const documents = await response.json();
-      return documents || [];
+      const data = await response.json();
+      const documents = data.workspace?.[0]?.documents || [];
+      
+      return documents.map(doc => ({
+        id: doc.docpath || doc.id,
+        name: JSON.parse(doc.metadata || '{}').title || doc.filename,
+        type: doc.mime || 'application/octet-stream',
+        size: JSON.parse(doc.metadata || '{}').wordCount || 0,
+        category: 'Other',
+        uploadDate: doc.createdAt || new Date().toISOString(),
+        status: 'ready'
+      }));
     } catch (error) {
       console.error('Failed to fetch documents, falling back to mock:', error);
       return this.mockGetDocuments();
@@ -152,9 +183,15 @@ export class DocumentAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/documents/${documentId}`, {
-        method: 'DELETE',
-        headers: this.getHeaders(),
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}/update-embeddings`, {
+        method: 'POST',
+        headers: {
+          ...this.getHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          deletes: [documentId]
+        })
       });
 
       return response.ok;
@@ -272,13 +309,16 @@ export interface ChatMessage {
 }
 
 export class ChatAPI {
-  private static readonly BASE_URL = '/api';
-  private static readonly USE_MOCK = import.meta.env.NODE_ENV === 'development';
+  private static readonly BASE_URL = import.meta.env.VITE_ANYTHINGLLM_URL || 'http://localhost:3001/api/v1';
+  private static readonly API_KEY = import.meta.env.VITE_ANYTHINGLLM_API_KEY || 'ETVXYEN-K9CMYY4-K3X6WRJ-XSS8SXQ';
+  private static readonly WORKSPACE = import.meta.env.VITE_ANYTHINGLLM_WORKSPACE || 'prova';
+  private static readonly USE_MOCK = false;
 
   private static getHeaders(): HeadersInit {
     return {
+      'Authorization': `Bearer ${this.API_KEY}`,
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      'Accept': 'application/json'
     };
   }
 
@@ -288,12 +328,13 @@ export class ChatAPI {
     }
 
     try {
-      const response = await fetch(`${this.BASE_URL}/chat`, {
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}/chat`, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify({
           message: message,
-          sessionId: sessionId
+          mode: 'chat',
+          sessionId: sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2)}`
         }),
       });
 
@@ -302,7 +343,11 @@ export class ChatAPI {
       }
 
       const result = await response.json();
-      return result;
+      return {
+        success: true,
+        response: result.textResponse || result.response || 'Sorry, I could not process your request.',
+        sessionId: sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2)}`
+      };
     } catch (error) {
       console.error('Chat API error, falling back to mock:', error);
       return this.mockSendMessage(message, sessionId);
