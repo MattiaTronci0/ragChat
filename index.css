@@ -108,7 +108,7 @@
   --radaelli-gray-900: #111827;
 }
 
-/* Studio Radaelli Professional Colors */
+/* Studio Radaelli Professional Colors - Light Mode */
 .text-radaelli-olive-800 {
   color: #333325 !important;
 }
@@ -131,6 +131,31 @@
 
 .text-radaelli-gold-700 {
   color: #b45309 !important;
+}
+
+/* Studio Radaelli Professional Colors - Dark Mode */
+.dark .text-radaelli-olive-800 {
+  color: #e8e8d8 !important;
+}
+
+.dark .text-radaelli-olive-900 {
+  color: #f7f7f2 !important;
+}
+
+.dark .text-radaelli-green-700 {
+  color: #86efac !important;
+}
+
+.dark .text-radaelli-green-800 {
+  color: #bbf7d0 !important;
+}
+
+.dark .text-radaelli-gold-600 {
+  color: #fcd34d !important;
+}
+
+.dark .text-radaelli-gold-700 {
+  color: #fde68a !important;
 }
 
 /* Professional borders */
@@ -186,10 +211,53 @@ html.dark *[class*="text-radaelli-gold-400"],
   color: #fbbf24 !important;
 }
 
+/* Better contrast for navigation items */
+.dark .bg-gradient-to-r.from-green-600.to-green-700 {
+  background: linear-gradient(to right, #16a34a, #15803d) !important;
+}
+
+.dark .bg-gradient-to-r.from-gray-600.to-gray-700 {
+  background: linear-gradient(to right, #4b5563, #374151) !important;
+}
+
+.dark .bg-gradient-to-r.from-amber-600.to-amber-700 {
+  background: linear-gradient(to right, #d97706, #b45309) !important;
+}
+
+/* Improved button contrast */
+.dark .bg-gradient-to-br.from-green-600.to-green-700 {
+  background: linear-gradient(to bottom right, #16a34a, #15803d) !important;
+}
+
+.dark .bg-gradient-to-br.from-green-600.to-green-800 {
+  background: linear-gradient(to bottom right, #16a34a, #166534) !important;
+}
+
 /* Professional dark mode background - inspired by classical architecture */
 .dark {
-  background: linear-gradient(135deg, #2a2a1f 0%, #333325 50%, #40402e 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #404040 100%);
   color: #f9fafb;
+}
+
+/* Dark mode specific overrides for better contrast */
+.dark .bg-white\/90 {
+  background-color: rgba(45, 45, 45, 0.9) !important;
+}
+
+.dark .bg-white\/95 {
+  background-color: rgba(45, 45, 45, 0.95) !important;
+}
+
+.dark .bg-white\/80 {
+  background-color: rgba(45, 45, 45, 0.8) !important;
+}
+
+.dark .border-olive-200 {
+  border-color: #52523a !important;
+}
+
+.dark .border-olive-300 {
+  border-color: #6b6b4a !important;
 }
 
 /* Professional placeholder colors */
@@ -251,4 +319,41 @@ html.dark *[class*="text-radaelli-gold-400"],
   background: linear-gradient(135deg, #52523a 0%, #40402e 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(107, 107, 74, 0.3);
+}
+
+/* Improved text contrast for better readability */
+.text-high-contrast {
+  color: #1f2937 !important;
+}
+
+.dark .text-high-contrast {
+  color: #f9fafb !important;
+}
+
+.text-medium-contrast {
+  color: #4b5563 !important;
+}
+
+.dark .text-medium-contrast {
+  color: #d1d5db !important;
+}
+
+/* Better navigation contrast */
+.nav-item-active {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+  color: white !important;
+}
+
+.nav-item-inactive {
+  background: transparent !important;
+  color: #6b7280 !important;
+}
+
+.dark .nav-item-inactive {
+  color: #9ca3af !important;
+}
+
+.dark .nav-item-inactive:hover {
+  background: rgba(156, 163, 175, 0.1) !important;
+  color: #d1d5db !important;
 }

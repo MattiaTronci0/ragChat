@@ -34,24 +34,24 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend, isLoading }: Messag
 
   return (
     <div className="relative p-4">
-      <div className="relative bg-white/95 dark:bg-olive-900/80 backdrop-blur-xl rounded-2xl shadow-lg border border-olive-200 dark:border-olive-700 flex items-end p-2 gap-2">
+      <div className="relative bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex items-end p-2 gap-2">
         <textarea
           ref={textareaRef}
           value={message}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Fai una domanda finanziaria..."
-          className="flex-1 bg-transparent p-2 text-gray-900 dark:text-green-100 placeholder-olive-500 dark:placeholder-olive-400 focus:outline-none resize-none max-h-48"
+          className="flex-1 bg-transparent p-2 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none resize-none max-h-48"
           rows={1}
           disabled={isLoading}
         />
-        <div className="text-sm text-olive-400 dark:text-olive-300 hidden sm:block self-center pr-2">
+        <div className="text-sm text-gray-400 dark:text-gray-300 hidden sm:block self-center pr-2">
           ↵ per inviare
         </div>
         <button
           onClick={handleSend}
           disabled={!message.trim() || isLoading}
-          className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-green-600 to-green-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-offset-green-800"
+          className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-offset-gray-800"
           aria-label="Invia messaggio"
         >
           <SendIcon className="w-6 h-6" />

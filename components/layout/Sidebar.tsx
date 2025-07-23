@@ -5,9 +5,9 @@ import ThemeToggle from './ThemeToggle';
 import { CalculatorIcon, SparklesIcon, MessageSquareIcon, FolderKanbanIcon, HistoryIcon } from '../shared/Icons';
 
 const navItems = [
-  { to: '/', text: 'Chat', icon: MessageSquareIcon, gradient: 'from-green-600 to-green-800', lightGradient: 'from-green-700 to-green-900' },
-  { to: '/documents', text: 'Documenti', icon: FolderKanbanIcon, gradient: 'from-olive-600 to-olive-800', lightGradient: 'from-olive-700 to-olive-900' },
-  { to: '/history', text: 'Cronologia', icon: HistoryIcon, gradient: 'from-gold-600 to-gold-800', lightGradient: 'from-gold-700 to-gold-900' },
+  { to: '/', text: 'Chat', icon: MessageSquareIcon, gradient: 'from-green-600 to-green-700', lightGradient: 'from-green-500 to-green-600' },
+  { to: '/documents', text: 'Documenti', icon: FolderKanbanIcon, gradient: 'from-gray-600 to-gray-700', lightGradient: 'from-gray-500 to-gray-600' },
+  { to: '/history', text: 'Cronologia', icon: HistoryIcon, gradient: 'from-amber-600 to-amber-700', lightGradient: 'from-amber-500 to-amber-600' },
 ];
 
 const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, icon: Icon, gradient, lightGradient, delay }: typeof navItems[0] & { delay: number }) => {
@@ -20,8 +20,10 @@ const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, i
             <button
                 onClick={() => navigate(to)}
                 className={
-                    `w-full flex items-center p-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl bg-gradient-to-br dark:${gradient} ${lightGradient} ${
-                        isActive ? 'scale-105 shadow-xl ring-2 ring-white/30 dark:ring-white/50' : 'shadow-md'
+                    `w-full flex items-center p-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl ${
+                        isActive 
+                            ? `bg-gradient-to-br ${gradient} scale-105 shadow-xl ring-2 ring-white/30 dark:ring-white/50` 
+                            : `bg-gradient-to-br ${lightGradient} shadow-md hover:bg-gradient-to-br ${gradient}`
                     }`
                 }
             >
@@ -36,15 +38,15 @@ const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, i
 const Sidebar: React.FC = () => {
   return (
     <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl border-r border-slate-300 dark:border-slate-800 shadow-2xl">
-      <div className="flex items-center gap-3 mb-10">
-        <div className="relative">
-            <CalculatorIcon className="w-12 h-12 text-green-700 dark:text-green-100" />
-            <SparklesIcon className="absolute -top-1 -right-1 w-5 h-5 text-gold-600 animate-pulse" />
+              <div className="flex items-center gap-3 mb-10">
+          <div className="relative">
+            <CalculatorIcon className="w-12 h-12 text-green-700 dark:text-green-300" />
+            <SparklesIcon className="absolute -top-1 -right-1 w-5 h-5 text-amber-500 dark:text-amber-400 animate-pulse" />
+          </div>
+          <h1 className="text-xl font-bold font-professional bg-gradient-to-r from-green-700 to-green-600 dark:from-green-300 dark:to-green-400 bg-clip-text text-transparent">
+            AI Contabile
+          </h1>
         </div>
-        <h1 className="text-xl font-bold font-professional bg-gradient-to-r from-green-700 to-green-600 dark:from-green-100 dark:to-green-300 bg-clip-text text-transparent">
-          AI Contabile
-        </h1>
-      </div>
 
       <nav className="flex-grow">
         <ul className="space-y-4">
@@ -58,7 +60,7 @@ const Sidebar: React.FC = () => {
         <div className="flex justify-center mb-4">
           <ThemeToggle />
         </div>
-        <p className="text-center text-xs text-olive-600 dark:text-olive-300 font-classical">
+        <p className="text-center text-xs text-gray-600 dark:text-gray-400 font-classical">
           Alimentato da AI Avanzata
         </p>
       </div>
