@@ -84,8 +84,8 @@ const DocumentUpload: React.FC = () => {
   });
 
   return (
-    <div className="p-4 bg-white/95 dark:bg-blue-800/60 backdrop-blur-lg rounded-2xl shadow-md border border-blue-200 dark:border-blue-700">
-      <div {...getRootProps()} className={`relative p-6 border-2 border-dashed rounded-xl cursor-pointer transition-colors duration-300 ${isDragActive ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'border-blue-400 dark:border-blue-600 hover:border-blue-400'}`}>
+    <div className="p-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg rounded-2xl shadow-md border border-gray-200 dark:border-gray-700">
+      <div {...getRootProps()} className={`relative p-6 border-2 border-dashed rounded-xl cursor-pointer transition-colors duration-300 ${isDragActive ? 'border-green-500 bg-green-50 dark:bg-green-900/30' : 'border-gray-400 dark:border-gray-600 hover:border-green-400'}`}>
         <input {...getInputProps()} />
         {isUploading ? (
           <div className="flex flex-col items-center justify-center text-center">
@@ -94,7 +94,7 @@ const DocumentUpload: React.FC = () => {
               {uploadStatus === 'uploading' ? 'Caricamento sul VPS...' : 'Elaborazione...'}
             </p>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-2">
-                <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style={{width: `${uploadProgress}%`}}></div>
+                <div className="bg-green-600 h-2.5 rounded-full transition-all duration-300" style={{width: `${uploadProgress}%`}}></div>
             </div>
           </div>
         ) : (
@@ -118,7 +118,7 @@ const DocumentUpload: React.FC = () => {
             ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800' 
             : uploadStatus === 'error'
             ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
-            : 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'
+            : 'bg-gray-50 dark:bg-gray-900/20 border border-gray-200 dark:border-gray-800'
         }`}>
           {uploadStatus === 'success' && <CheckCircleIcon className="w-4 h-4 text-green-600 dark:text-green-400" />}
           {uploadStatus === 'error' && <AlertCircleIcon className="w-4 h-4 text-red-600 dark:text-red-400" />}
@@ -127,7 +127,7 @@ const DocumentUpload: React.FC = () => {
               ? 'text-green-800 dark:text-green-200' 
               : uploadStatus === 'error'
               ? 'text-red-800 dark:text-red-200'
-              : 'text-blue-800 dark:text-blue-200'
+              : 'text-gray-800 dark:text-gray-200'
           }`}>
             {statusMessage}
           </p>
@@ -143,7 +143,7 @@ const DocumentUpload: React.FC = () => {
           value={selectedCategory}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
           disabled={isUploading}
-          className="w-full p-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full p-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-green-500 focus:border-green-500"
         >
           {categories.map(cat => <option key={cat.id} value={cat.name}>{cat.name}</option>)}
         </select>

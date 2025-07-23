@@ -17,7 +17,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ documents, onDelete }) => {
 
   if (documents.length === 0) {
     return (
-      <div className="text-center py-16 text-slate-500 dark:text-slate-400 animate-[fadeIn_0.6s_ease-out]">
+      <div className="text-center py-16 text-gray-500 dark:text-gray-400 animate-[fadeIn_0.6s_ease-out]">
         <h3 className="text-xl font-semibold">No Documents Found</h3>
         <p>Try adjusting your search or filters, or upload a new document.</p>
       </div>
@@ -30,7 +30,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ documents, onDelete }) => {
         {documents.map((doc, i) => (
           <div key={doc.id} style={{ animationDelay: `${i * 50}ms` }}>
             <DocumentCard 
-              document={doc} 
+              document={{ ...doc, status: 'ready' as const }} 
               onDelete={() => setDocToDelete(doc.id)} 
               onPreview={setDocToPreview}
             />

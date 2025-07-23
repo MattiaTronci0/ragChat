@@ -37,7 +37,7 @@ const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, i
 
 const Sidebar: React.FC = () => {
   return (
-    <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl border-r border-slate-300 dark:border-slate-800 shadow-2xl">
+    <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/90 dark:bg-gray-900/60 backdrop-blur-xl border-r border-gray-300 dark:border-gray-800 shadow-2xl">
               <div className="flex items-center gap-3 mb-10">
           <div className="relative">
             <CalculatorIcon className="w-12 h-12 text-green-700 dark:text-green-300" />

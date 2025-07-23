@@ -11,17 +11,17 @@ interface MessageListProps {
 }
 
 const WelcomeCard: React.FC<{ title: string; description: string }> = ({ title, description }) => (
-    <div className="bg-white/50 dark:bg-slate-800/50 p-4 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 backdrop-blur-sm border border-slate-200 dark:border-slate-700 cursor-pointer">
-        <h3 className="font-bold text-slate-800 dark:text-slate-100">{title}</h3>
-        <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">{description}</p>
+    <div className="bg-white/80 dark:bg-gray-800/80 p-4 rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 backdrop-blur-sm border border-gray-200 dark:border-gray-700 cursor-pointer">
+        <h3 className="font-bold text-gray-800 dark:text-gray-100">{title}</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>
     </div>
 )
 
 const WelcomeScreen: React.FC = () => (
     <div className="flex flex-col items-center justify-center h-full text-center p-8 animate-[fadeIn_0.6s_ease-out]">
-        <BotIcon className="w-16 h-16 text-emerald-500 mb-4" />
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent mb-2">Welcome to your AI Financial Assistant</h2>
-        <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-lg">
+        <BotIcon className="w-16 h-16 text-green-600 dark:text-green-400 mb-4" />
+        <h2 className="text-2xl font-bold font-professional bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent mb-2">Welcome to your AI Financial Assistant</h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-lg">
             Start by asking a question, or explore some of these common topics.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
@@ -54,10 +54,10 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading }) => {
       ))}
       {isLoading && (
         <div className="flex items-end gap-2">
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white mb-4">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-600 dark:bg-green-500 flex items-center justify-center text-white mb-4">
                 <BotIcon className="w-5 h-5" />
             </div>
-            <div className="bg-white dark:bg-slate-700 rounded-2xl rounded-bl-none shadow-md">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-bl-none shadow-md border border-gray-200 dark:border-gray-700">
                 <TypingIndicator />
             </div>
         </div>

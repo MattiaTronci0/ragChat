@@ -47,7 +47,7 @@ const HistoryContainer: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 bg-white/90 dark:bg-blue-900/50 backdrop-blur-xl rounded-2xl shadow-lg border border-blue-200 dark:border-blue-800 overflow-y-auto p-6 animate-fade-in [animation-delay:200ms]">
+              <div className="flex-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-y-auto p-6 animate-fade-in [animation-delay:200ms]">
         <HistoryList history={filteredHistory} onDelete={deleteHistory} />
       </div>
 
