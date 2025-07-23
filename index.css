@@ -33,7 +33,7 @@
   animation: fadeIn 0.6s ease-out forwards;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Studio Radaelli colors */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -44,12 +44,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.5); /* gray-400 with 50% opacity */
+  background: rgba(30, 58, 138, 0.5); /* blue-800 with 50% opacity */
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(107, 114, 128, 0.5); /* gray-500 with 50% opacity */
+  background: rgba(30, 58, 138, 0.7); /* blue-800 with 70% opacity */
 }
 
 /* Ensure elements stay visible */
@@ -61,111 +61,112 @@
   opacity: 1 !important;
 }
 
-/* Enhanced light mode colors */
+/* Studio Radaelli color palette */
 :root {
-  --slate-50: #f8fafc;
-  --slate-100: #f1f5f9;
-  --slate-200: #e2e8f0;
-  --slate-300: #cbd5e1;
-  --slate-400: #94a3b8;
-  --slate-500: #64748b;
-  --slate-600: #475569;
-  --slate-700: #334155;
-  --slate-800: #1e293b;
-  --slate-900: #0f172a;
+  --radaelli-blue-50: #eff6ff;
+  --radaelli-blue-100: #dbeafe;
+  --radaelli-blue-200: #bfdbfe;
+  --radaelli-blue-300: #93c5fd;
+  --radaelli-blue-400: #60a5fa;
+  --radaelli-blue-500: #3b82f6;
+  --radaelli-blue-600: #2563eb;
+  --radaelli-blue-700: #1d4ed8;
+  --radaelli-blue-800: #1e40af;
+  --radaelli-blue-900: #1e3a8a;
+  
+  --radaelli-gray-50: #f9fafb;
+  --radaelli-gray-100: #f3f4f6;
+  --radaelli-gray-200: #e5e7eb;
+  --radaelli-gray-300: #d1d5db;
+  --radaelli-gray-400: #9ca3af;
+  --radaelli-gray-500: #6b7280;
+  --radaelli-gray-600: #4b5563;
+  --radaelli-gray-700: #374151;
+  --radaelli-gray-800: #1f2937;
+  --radaelli-gray-900: #111827;
 }
 
-/* Better text contrast in light mode */
-.text-slate-800 {
-  color: #1e293b !important;
+/* Studio Radaelli professional colors */
+.text-radaelli-blue-800 {
+  color: #1e40af !important;
 }
 
-.text-slate-900 {
-  color: #0f172a !important;
+.text-radaelli-blue-900 {
+  color: #1e3a8a !important;
 }
 
-/* Better border visibility in light mode */
-.border-slate-300 {
-  border-color: #cbd5e1 !important;
+.text-radaelli-gray-700 {
+  color: #374151 !important;
 }
 
-.border-slate-400 {
-  border-color: #94a3b8 !important;
+.text-radaelli-gray-800 {
+  color: #1f2937 !important;
 }
 
-/* Enhanced dark mode text contrast - much brighter with higher specificity */
-html.dark .text-slate-100,
-.dark .text-slate-100,
-html.dark *[class*="text-slate-100"],
-.dark *[class*="text-slate-100"] {
-  color: #ffffff !important;
+/* Professional borders */
+.border-radaelli-blue-200 {
+  border-color: #bfdbfe !important;
 }
 
-html.dark .text-slate-200,
-.dark .text-slate-200,
-html.dark *[class*="text-slate-200"],
-.dark *[class*="text-slate-200"] {
-  color: #f8fafc !important;
+.border-radaelli-blue-300 {
+  border-color: #93c5fd !important;
 }
 
-html.dark .text-slate-300,
-.dark .text-slate-300,
-html.dark *[class*="text-slate-300"],
-.dark *[class*="text-slate-300"] {
-  color: #f1f5f9 !important;
+.border-radaelli-gray-200 {
+  border-color: #e5e7eb !important;
 }
 
-html.dark .text-slate-400,
-.dark .text-slate-400,
-html.dark *[class*="text-slate-400"],
-.dark *[class*="text-slate-400"] {
-  color: #e2e8f0 !important;
+.border-radaelli-gray-300 {
+  border-color: #d1d5db !important;
 }
 
-html.dark .text-slate-500,
-.dark .text-slate-500,
-html.dark *[class*="text-slate-500"],
-.dark *[class*="text-slate-500"] {
-  color: #cbd5e1 !important;
+/* Enhanced dark mode with Studio Radaelli colors */
+html.dark .text-radaelli-blue-100,
+.dark .text-radaelli-blue-100,
+html.dark *[class*="text-radaelli-blue-100"],
+.dark *[class*="text-radaelli-blue-100"] {
+  color: #dbeafe !important;
 }
 
-html.dark .text-slate-600,
-.dark .text-slate-600,
-html.dark *[class*="text-slate-600"],
-.dark *[class*="text-slate-600"] {
-  color: #f1f5f9 !important;
+html.dark .text-radaelli-blue-200,
+.dark .text-radaelli-blue-200,
+html.dark *[class*="text-radaelli-blue-200"],
+.dark *[class*="text-radaelli-blue-200"] {
+  color: #bfdbfe !important;
 }
 
-/* Force brighter icons in dark mode */
-.dark .text-slate-400 svg,
-.dark .text-slate-500 svg {
-  color: #e2e8f0 !important;
+html.dark .text-radaelli-blue-300,
+.dark .text-radaelli-blue-300,
+html.dark *[class*="text-radaelli-blue-300"],
+.dark *[class*="text-radaelli-blue-300"] {
+  color: #93c5fd !important;
 }
 
-/* Additional dark mode overrides for better visibility */
-.dark p[class*="text-slate-100"],
-.dark h1[class*="text-slate-100"],
-.dark h2[class*="text-slate-100"],
-.dark h3[class*="text-slate-100"],
-.dark span[class*="text-slate-100"],
-.dark div[class*="text-slate-100"] {
-  color: #ffffff !important;
+html.dark .text-radaelli-blue-400,
+.dark .text-radaelli-blue-400,
+html.dark *[class*="text-radaelli-blue-400"],
+.dark *[class*="text-radaelli-blue-400"] {
+  color: #60a5fa !important;
 }
 
-/* Ensure all Tailwind dark mode text classes work */
+html.dark .text-radaelli-blue-500,
+.dark .text-radaelli-blue-500,
+html.dark *[class*="text-radaelli-blue-500"],
+.dark *[class*="text-radaelli-blue-500"] {
+  color: #3b82f6 !important;
+}
+
+/* Professional dark mode background */
 .dark {
-  --tw-text-slate-100: #ffffff;
-  --tw-text-slate-200: #f8fafc;
-  --tw-text-slate-300: #f1f5f9;
-  --tw-text-slate-400: #e2e8f0;
-  --tw-text-slate-500: #cbd5e1;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+  color: #f9fafb;
 }
 
-/* Better placeholder contrast */
-.dark .placeholder-slate-500::placeholder {
-  color: #94a3b8 !important;
+/* Professional placeholder colors */
+.dark .placeholder-radaelli-gray-400::placeholder {
+  color: #9ca3af !important;
 }
 
-.placeholder-slate-500::placeholder {
-  color: #64748b !important;
+.placeholder-radaelli-gray-400::placeholder {
+  color: #9ca3af !important;
 }

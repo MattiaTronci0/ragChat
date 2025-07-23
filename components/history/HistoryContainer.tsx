@@ -21,12 +21,12 @@ const HistoryContainer: React.FC = () => {
     <div className="flex flex-col h-full overflow-hidden p-4 md:p-6">
        <header className="flex-shrink-0 animate-fade-in">
         <div className="flex items-center gap-3">
-          <HistoryIcon className="w-8 h-8 text-orange-500" />
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
-            Conversation History
+          <HistoryIcon className="w-8 h-8 text-blue-600" />
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 dark:from-blue-100 dark:to-blue-300 bg-clip-text text-transparent">
+            Cronologia Conversazioni
           </h1>
         </div>
-        <p className="text-slate-600 dark:text-slate-300 mt-1">Review and manage your past conversations.</p>
+        <p className="text-gray-600 dark:text-gray-300 mt-1">Rivedi e gestisci le tue conversazioni precedenti.</p>
       </header>
 
       <div className="my-6 flex flex-col md:flex-row items-center justify-between gap-4 animate-slide-up [animation-delay:100ms]">
@@ -38,8 +38,8 @@ const HistoryContainer: React.FC = () => {
           {filteredHistory.length > 0 && (
             <button
                 onClick={() => setIsConfirmOpen(true)}
-                className="p-2 text-slate-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-lg transition-colors"
-                title="Clear all history"
+                className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-lg transition-colors"
+                title="Cancella tutta la cronologia"
             >
                 <Trash2Icon className="w-5 h-5" />
             </button>
@@ -47,7 +47,7 @@ const HistoryContainer: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 bg-white/90 dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-300 dark:border-slate-800 overflow-y-auto p-6 animate-fade-in [animation-delay:200ms]">
+      <div className="flex-1 bg-white/90 dark:bg-blue-900/50 backdrop-blur-xl rounded-2xl shadow-lg border border-blue-200 dark:border-blue-800 overflow-y-auto p-6 animate-fade-in [animation-delay:200ms]">
         <HistoryList history={filteredHistory} onDelete={deleteHistory} />
       </div>
 
@@ -55,8 +55,8 @@ const HistoryContainer: React.FC = () => {
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={handleClearAll}
-        title="Clear All History"
-        message="Are you sure you want to delete your entire conversation history? This action is permanent and cannot be undone."
+        title="Cancella Tutta la Cronologia"
+        message="Sei sicuro di voler eliminare l'intera cronologia delle conversazioni? Questa azione è permanente e non può essere annullata."
       />
     </div>
   );

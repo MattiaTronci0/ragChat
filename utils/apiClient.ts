@@ -42,20 +42,20 @@ export class DocumentAPI {
       return this.mockUploadDocument(file, category);
     }
 
-    // Validate file size (100MB limit)
+    // Valida dimensione file (limite 100MB)
     if (file.size > 100 * 1024 * 1024) {
       return {
         success: false,
-        error: 'File too large. Maximum size is 100MB.'
+        error: 'File troppo grande. Dimensione massima 100MB.'
       };
     }
 
-    // Validate file type
+    // Valida tipo file
     const allowedTypes = /\.(pdf|doc|docx|txt|xlsx|xls|png|jpg|jpeg|gif|csv|json|xml|html|md|rtf)$/i;
     if (!allowedTypes.test(file.name)) {
       return {
         success: false,
-        error: 'Invalid file type. Only documents and images are allowed.'
+        error: 'Tipo di file non valido. Sono consentiti solo documenti e immagini.'
       };
     }
 
@@ -80,15 +80,15 @@ export class DocumentAPI {
 
         const result = await response.json();
         return result;
-      } catch (error) {
+      } catch (error: any) {
         lastError = error;
         
-        // Don't retry on client errors or validation errors
-        if (error.message.includes('Invalid file') || error.message.includes('File too large')) {
+        // Non riprovare su errori client o errori di validazione
+        if (error.message && (error.message.includes('Tipo di file non valido') || error.message.includes('File troppo grande'))) {
           break;
         }
         
-        // Retry on network errors
+        // Riprova su errori di rete
         if (i < maxRetries - 1) {
           await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
           continue;
@@ -96,7 +96,7 @@ export class DocumentAPI {
       }
     }
 
-    console.error('Upload error, falling back to mock:', lastError);
+    console.error('Errore di caricamento, fallback a mock:', lastError);
     return this.mockUploadDocument(file, category);
   }
 

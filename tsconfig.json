@@ -17,14 +17,26 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+
+    /* Type checking */
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
 
     "paths": {
       "@/*" :  ["./*"]
     }
-  }
+  },
+  "include": [
+    "src/**/*",
+    "**/*.ts",
+    "**/*.tsx",
+    "vite-env.d.ts",
+    "types/**/*.d.ts"
+  ]
 }

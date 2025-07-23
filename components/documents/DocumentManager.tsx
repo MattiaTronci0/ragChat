@@ -15,16 +15,16 @@ const DocumentManager: React.FC = () => {
     <div className="flex flex-col h-full overflow-hidden p-4 md:p-6 gap-6">
       <header className="flex-shrink-0 animate-fade-in">
         <div className="flex items-center gap-3">
-            <FolderKanbanIcon className="w-8 h-8 text-emerald-500" />
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
-              Document Hub
+            <FolderKanbanIcon className="w-8 h-8 text-blue-600" />
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 dark:from-blue-100 dark:to-blue-300 bg-clip-text text-transparent">
+              Hub Documenti
             </h1>
         </div>
-        <p className="text-slate-600 dark:text-slate-300 mt-1">Upload documents to VPS for n8n processing and vector database integration.</p>
+        <p className="text-gray-600 dark:text-gray-300 mt-1">Carica documenti sul VPS per l'elaborazione n8n e l'integrazione con il database vettoriale.</p>
       </header>
       
       <div className="flex flex-col lg:flex-row gap-6 flex-grow overflow-hidden">
-        {/* Left column for upload and controls */}
+        {/* Colonna sinistra per caricamento e controlli */}
         <div className="w-full lg:w-1/3 xl:w-1/4 flex-shrink-0 flex flex-col gap-6">
             <div className="animate-slide-up [animation-delay:100ms]">
                 <DocumentUpload />
@@ -35,8 +35,8 @@ const DocumentManager: React.FC = () => {
             </div>
         </div>
         
-        {/* Right column for document list */}
-        <div className="flex-1 bg-white/90 dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-lg border border-slate-300 dark:border-slate-800 overflow-y-auto p-6 animate-fade-in [animation-delay:300ms]">
+        {/* Colonna destra per la lista documenti */}
+        <div className="flex-1 bg-white/90 dark:bg-blue-900/50 backdrop-blur-xl rounded-2xl shadow-lg border border-blue-200 dark:border-blue-800 overflow-y-auto p-6 animate-fade-in [animation-delay:300ms]">
           <DocumentList documents={filteredDocs} onDelete={deleteDocument} />
         </div>
       </div>

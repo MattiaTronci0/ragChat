@@ -9,65 +9,65 @@ const FormData = require('form-data');
 const app = express();
 const PORT = process.env.PORT || 3002;
 
-// Trust proxy for proper IP detection behind nginx
+// Fiducia del proxy per il rilevamento corretto dell'IP dietro nginx
 app.set('trust proxy', 1);
 
-// Security middleware
+// Middleware di sicurezza
 app.use(helmet());
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost',
   credentials: true
 }));
 
-// Rate limiting
+// Limitazione del tasso
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
+  windowMs: 15 * 60 * 1000, // 15 minuti
+  max: 100, // limita ogni IP a 100 richieste per windowMs
+  message: 'Troppe richieste da questo IP, riprova più tardi.',
   standardHeaders: true,
   legacyHeaders: false,
 });
 
 app.use('/api', limiter);
 
-// Body parsing
+// Parsing del body
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// File upload configuration
+// Configurazione caricamento file
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 100 * 1024 * 1024, // 100MB limit
+    fileSize: 100 * 1024 * 1024, // limite 100MB
   },
   fileFilter: (req, file, cb) => {
-    // Allow common document types
+    // Consenti tipi di documento comuni
     const allowedTypes = /\.(pdf|doc|docx|txt|xlsx|xls|png|jpg|jpeg|gif|csv|json|xml|html|md|rtf)$/i;
     if (allowedTypes.test(file.originalname)) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid file type. Only documents and images are allowed.'));
+      cb(new Error('Tipo di file non valido. Sono consentiti solo documenti e immagini.'));
     }
   }
 });
 
-// AnythingLLM configuration
+// Configurazione AnythingLLM
 const ANYTHINGLLM_BASE_URL = process.env.ANYTHINGLLM_BASE_URL || 'http://anythingllm:3001';
 const ANYTHINGLLM_API_KEY = process.env.ANYTHINGLLM_API_KEY;
 const ANYTHINGLLM_WORKSPACE = process.env.ANYTHINGLLM_WORKSPACE || 'default-workspace';
 
-// Validation middleware
+// Middleware di validazione
 const validateApiKey = (req, res, next) => {
   if (!ANYTHINGLLM_API_KEY || ANYTHINGLLM_API_KEY === 'your-api-key-will-be-generated-after-first-setup') {
     return res.status(500).json({ 
       success: false, 
-      error: 'AnythingLLM API key not configured' 
+      error: 'Chiave API AnythingLLM non configurata' 
     });
   }
   next();
 };
 
-// Helper function to make requests to AnythingLLM
+// Funzione helper per fare richieste a AnythingLLM
 async function makeAnythingLLMRequest(endpoint, options = {}) {
   const url = `${ANYTHINGLLM_BASE_URL}${endpoint}`;
   const headers = {
@@ -90,17 +90,17 @@ async function makeAnythingLLMRequest(endpoint, options = {}) {
       if (!response.ok) {
         const errorText = await response.text();
         
-        // Don't retry on client errors (4xx)
+        // Non riprovare su errori client (4xx)
         if (response.status >= 400 && response.status < 500) {
-          throw new Error(`AnythingLLM API error: ${response.status} - ${errorText}`);
+          throw new Error(`Errore API AnythingLLM: ${response.status} - ${errorText}`);
         }
         
-        // Retry on server errors (5xx)
+        // Riprova su errori server (5xx)
         if (i === maxRetries - 1) {
-          throw new Error(`AnythingLLM API error: ${response.status} - ${errorText}`);
+          throw new Error(`Errore API AnythingLLM: ${response.status} - ${errorText}`);
         }
         
-        // Wait before retry (exponential backoff)
+        // Attendi prima di riprovare (backoff esponenziale)
         await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
         continue;
       }
@@ -109,12 +109,12 @@ async function makeAnythingLLMRequest(endpoint, options = {}) {
     } catch (error) {
       lastError = error;
       
-      // Don't retry on network errors if it's the last attempt
+      // Non riprovare su errori di rete se è l'ultimo tentativo
       if (i === maxRetries - 1) {
         throw error;
       }
       
-      // Wait before retry
+      // Attendi prima di riprovare
       await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
     }
   }
@@ -122,7 +122,7 @@ async function makeAnythingLLMRequest(endpoint, options = {}) {
   throw lastError;
 }
 
-// Health check endpoint
+// Endpoint controllo salute
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
@@ -131,7 +131,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Document upload endpoint
+// Endpoint caricamento documenti
 app.post('/api/documents/upload', 
   validateApiKey, 
   upload.single('file'),
@@ -394,7 +394,7 @@ process.on('SIGINT', () => {
 });
 
 app.listen(PORT, () => {
-  console.log(`API Proxy server running on port ${PORT}`);
-  console.log(`AnythingLLM configured: ${!!ANYTHINGLLM_API_KEY && ANYTHINGLLM_API_KEY !== 'your-api-key-will-be-generated-after-first-setup'}`);
-  console.log(`Health check: http://localhost:${PORT}/health`);
+  console.log(`Server API Proxy in esecuzione sulla porta ${PORT}`);
+  console.log(`AnythingLLM configurato: ${!!ANYTHINGLLM_API_KEY && ANYTHINGLLM_API_KEY !== 'your-api-key-will-be-generated-after-first-setup'}`);
+  console.log(`Controllo salute: http://localhost:${PORT}/health`);
 });

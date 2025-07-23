@@ -5,12 +5,12 @@ import ThemeToggle from './ThemeToggle';
 import { CalculatorIcon, SparklesIcon, MessageSquareIcon, FolderKanbanIcon, HistoryIcon } from '../shared/Icons';
 
 const navItems = [
-  { to: '/', text: 'Chat', icon: MessageSquareIcon, gradient: 'from-blue-500 to-purple-600', lightGradient: 'from-blue-600 to-purple-700' },
-  { to: '/documents', text: 'Documents', icon: FolderKanbanIcon, gradient: 'from-emerald-500 to-teal-600', lightGradient: 'from-emerald-600 to-teal-700' },
-  { to: '/history', text: 'History', icon: HistoryIcon, gradient: 'from-orange-500 to-red-600', lightGradient: 'from-orange-600 to-red-700' },
+  { to: '/', text: 'Chat', icon: MessageSquareIcon, gradient: 'from-blue-600 to-blue-800', lightGradient: 'from-blue-700 to-blue-900' },
+  { to: '/documents', text: 'Documenti', icon: FolderKanbanIcon, gradient: 'from-blue-700 to-blue-900', lightGradient: 'from-blue-800 to-blue-900' },
+  { to: '/history', text: 'Cronologia', icon: HistoryIcon, gradient: 'from-blue-800 to-blue-900', lightGradient: 'from-blue-900 to-blue-900' },
 ];
 
-const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, icon: Icon, gradient, lightGradient, delay }) => {
+const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, icon: Icon, gradient, lightGradient, delay }: typeof navItems[0] & { delay: number }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const isActive = location.pathname === to;
@@ -38,11 +38,11 @@ const Sidebar: React.FC = () => {
     <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl border-r border-slate-300 dark:border-slate-800 shadow-2xl">
       <div className="flex items-center gap-3 mb-10">
         <div className="relative">
-            <CalculatorIcon className="w-12 h-12 text-slate-800 dark:text-white" />
-            <SparklesIcon className="absolute -top-1 -right-1 w-5 h-5 text-indigo-500 animate-pulse" />
+            <CalculatorIcon className="w-12 h-12 text-blue-800 dark:text-blue-100" />
+            <SparklesIcon className="absolute -top-1 -right-1 w-5 h-5 text-blue-600 animate-pulse" />
         </div>
-        <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
-          Accountant AI
+        <h1 className="text-xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 dark:from-blue-100 dark:to-blue-300 bg-clip-text text-transparent">
+          AI Contabile
         </h1>
       </div>
 
@@ -58,8 +58,8 @@ const Sidebar: React.FC = () => {
         <div className="flex justify-center mb-4">
           <ThemeToggle />
         </div>
-        <p className="text-center text-xs text-slate-600 dark:text-slate-300">
-          Powered by Advanced AI
+        <p className="text-center text-xs text-gray-600 dark:text-gray-300">
+          Alimentato da AI Avanzata
         </p>
       </div>
     </aside>

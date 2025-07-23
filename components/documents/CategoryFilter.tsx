@@ -7,14 +7,14 @@ const CategoryFilter: React.FC = () => {
 
   return (
     <div>
-      <label htmlFor="doc-category-filter" className="sr-only">Filter by category</label>
+      <label htmlFor="doc-category-filter" className="sr-only">Filtra per categoria</label>
       <select
         id="doc-category-filter"
         value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-        className="w-full md:w-48 p-2 bg-white/95 dark:bg-slate-700/80 border border-slate-400 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 backdrop-blur-sm"
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
+        className="w-full md:w-48 p-2 bg-white/95 dark:bg-gray-700/80 border border-gray-400 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 backdrop-blur-sm"
       >
-        <option value="all">All Categories</option>
+        <option value="all">Tutte le Categorie</option>
         {categories.map(cat => (
           <option key={cat.id} value={cat.name}>{cat.name}</option>
         ))}

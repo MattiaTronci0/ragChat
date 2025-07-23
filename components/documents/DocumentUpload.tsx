@@ -9,7 +9,7 @@ const DocumentUpload: React.FC = () => {
   const { addDocument, categories } = useDocumentStore();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.name || 'Other');
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.name || 'Altro');
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
   
@@ -18,20 +18,20 @@ const DocumentUpload: React.FC = () => {
       setIsUploading(true);
       setUploadProgress(0);
       setUploadStatus('uploading');
-      setStatusMessage('Uploading to server...');
+      setStatusMessage('Caricamento sul server...');
       
       const file = acceptedFiles[0];
       
-      // Simulate upload progress
-      const interval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(interval);
-            return 90; // Stop at 90% to handle actual save
-          }
-          return prev + 10;
-        });
-      }, 100);
+              // Simula il progresso di caricamento
+        const interval = setInterval(() => {
+          setUploadProgress((prev: number) => {
+            if (prev >= 90) {
+              clearInterval(interval);
+              return 90; // Ferma al 90% per gestire il salvataggio effettivo
+            }
+            return prev + 10;
+          });
+        }, 100);
 
       try {
         const success = await addDocument(file, selectedCategory);
@@ -40,10 +40,10 @@ const DocumentUpload: React.FC = () => {
         
         if (success) {
           setUploadStatus('success');
-          setStatusMessage('Document uploaded successfully! Processing will begin shortly.');
+          setStatusMessage('Documento caricato con successo! L\'elaborazione inizierà a breve.');
         } else {
           setUploadStatus('error');
-          setStatusMessage('Failed to upload document. Please try again.');
+          setStatusMessage('Impossibile caricare il documento. Riprova.');
         }
         
         setTimeout(() => {
@@ -57,8 +57,8 @@ const DocumentUpload: React.FC = () => {
         setIsUploading(false);
         setUploadProgress(0);
         setUploadStatus('error');
-        setStatusMessage('Upload failed. Please try again.');
-        console.error('Upload error:', error);
+        setStatusMessage('Caricamento fallito. Riprova.');
+        console.error('Errore di caricamento:', error);
         
         setTimeout(() => {
           setUploadStatus('idle');
@@ -84,34 +84,34 @@ const DocumentUpload: React.FC = () => {
   });
 
   return (
-    <div className="p-4 bg-white/95 dark:bg-slate-800/60 backdrop-blur-lg rounded-2xl shadow-md border border-slate-300 dark:border-slate-700">
-      <div {...getRootProps()} className={`relative p-6 border-2 border-dashed rounded-xl cursor-pointer transition-colors duration-300 ${isDragActive ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30' : 'border-slate-400 dark:border-slate-600 hover:border-indigo-400'}`}>
+    <div className="p-4 bg-white/95 dark:bg-blue-800/60 backdrop-blur-lg rounded-2xl shadow-md border border-blue-200 dark:border-blue-700">
+      <div {...getRootProps()} className={`relative p-6 border-2 border-dashed rounded-xl cursor-pointer transition-colors duration-300 ${isDragActive ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'border-blue-400 dark:border-blue-600 hover:border-blue-400'}`}>
         <input {...getInputProps()} />
         {isUploading ? (
           <div className="flex flex-col items-center justify-center text-center">
             <LoadingSpinner size={40} />
-            <p className="mt-4 text-sm font-semibold text-slate-700 dark:text-slate-100">
-              {uploadStatus === 'uploading' ? 'Uploading to VPS...' : 'Processing...'}
+            <p className="mt-4 text-sm font-semibold text-gray-700 dark:text-gray-100">
+              {uploadStatus === 'uploading' ? 'Caricamento sul VPS...' : 'Elaborazione...'}
             </p>
-            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 mt-2">
-                <div className="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style={{width: `${uploadProgress}%`}}></div>
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-2">
+                <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style={{width: `${uploadProgress}%`}}></div>
             </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-center">
-            <UploadCloudIcon className="w-12 h-12 text-slate-500 dark:text-slate-300" />
-            <p className="mt-4 text-sm font-semibold text-slate-700 dark:text-slate-100">
-              {isDragActive ? "Drop the file here..." : "Drag & drop a file here, or click to select"}
+            <UploadCloudIcon className="w-12 h-12 text-gray-500 dark:text-gray-300" />
+            <p className="mt-4 text-sm font-semibold text-gray-700 dark:text-gray-100">
+              {isDragActive ? "Rilascia il file qui..." : "Trascina e rilascia un file qui, o clicca per selezionare"}
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-300 mt-1">
-              Files will be uploaded to VPS for n8n processing
+            <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
+              I file verranno caricati sul VPS per l'elaborazione n8n
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-300 mt-1">PDF, Excel, Word, Image, or Text</p>
+            <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">PDF, Excel, Word, Immagine o Testo</p>
           </div>
         )}
       </div>
       
-      {/* Status Message */}
+      {/* Messaggio di Stato */}
       {statusMessage && (
         <div className={`mt-3 p-3 rounded-lg flex items-center gap-2 ${
           uploadStatus === 'success' 
@@ -135,15 +135,15 @@ const DocumentUpload: React.FC = () => {
       )}
       
       <div className="mt-4">
-        <label htmlFor="category-select" className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-          Assign Category
+        <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+          Assegna Categoria
         </label>
         <select
           id="category-select"
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
           disabled={isUploading}
-          className="w-full p-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-full p-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         >
           {categories.map(cat => <option key={cat.id} value={cat.name}>{cat.name}</option>)}
         </select>

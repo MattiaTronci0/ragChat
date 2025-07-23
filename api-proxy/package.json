@@ -1,7 +1,7 @@
 {
   "name": "ragchat-api-proxy",
   "version": "1.0.0",
-  "description": "Secure API proxy for AnythingLLM integration",
+  "description": "Proxy API sicuro per l'integrazione con AnythingLLM",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
