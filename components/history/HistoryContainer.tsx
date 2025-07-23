@@ -21,12 +21,12 @@ const HistoryContainer: React.FC = () => {
     <div className="flex flex-col h-full overflow-hidden p-4 md:p-6">
        <header className="flex-shrink-0 animate-fade-in">
         <div className="flex items-center gap-3">
-          <HistoryIcon className="w-8 h-8 text-blue-600" />
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 dark:from-blue-100 dark:to-blue-300 bg-clip-text text-transparent">
+          <HistoryIcon className="w-8 h-8 text-gold-600" />
+          <h1 className="text-3xl font-bold font-professional bg-gradient-to-r from-gold-800 to-gold-600 dark:from-gold-100 dark:to-gold-300 bg-clip-text text-transparent">
             Cronologia Conversazioni
           </h1>
         </div>
-        <p className="text-gray-600 dark:text-gray-300 mt-1">Rivedi e gestisci le tue conversazioni precedenti.</p>
+        <p className="text-olive-600 dark:text-olive-300 mt-1 font-classical">Rivedi e gestisci le tue conversazioni precedenti.</p>
       </header>
 
       <div className="my-6 flex flex-col md:flex-row items-center justify-between gap-4 animate-slide-up [animation-delay:100ms]">

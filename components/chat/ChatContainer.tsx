@@ -61,14 +61,14 @@ const ChatContainer: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white/90 dark:bg-blue-900/50 backdrop-blur-xl m-4 rounded-2xl shadow-lg border border-blue-200 dark:border-blue-800 overflow-hidden">
-      <header className="flex items-center justify-between p-4 border-b border-blue-200 dark:border-blue-800">
+    <div className="flex flex-col h-full bg-white/90 dark:bg-olive-900/50 backdrop-blur-xl m-4 rounded-2xl shadow-lg border border-olive-200 dark:border-olive-800 overflow-hidden">
+      <header className="flex items-center justify-between p-4 border-b border-olive-200 dark:border-olive-800">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <BotIcon className="w-8 h-8 text-blue-600" />
-            <SparklesIcon className="absolute -top-1 -right-1 w-4 h-4 text-blue-500 animate-pulse" />
+            <BotIcon className="w-8 h-8 text-green-600" />
+            <SparklesIcon className="absolute -top-1 -right-1 w-4 h-4 text-gold-500 animate-pulse" />
           </div>
-          <h2 className="text-lg font-bold text-blue-800 dark:text-blue-100">Assistente AI Finanziario</h2>
+          <h2 className="text-lg font-bold font-professional text-green-800 dark:text-green-100">Assistente AI Finanziario</h2>
         </div>
         {messages.length > 0 && (
           <button

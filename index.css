@@ -44,12 +44,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(30, 58, 138, 0.5); /* blue-800 with 50% opacity */
+  background: rgba(101, 163, 13, 0.5); /* green-600 with 50% opacity */
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(30, 58, 138, 0.7); /* blue-800 with 70% opacity */
+  background: rgba(101, 163, 13, 0.7); /* green-600 with 70% opacity */
 }
 
 /* Ensure elements stay visible */
@@ -61,18 +61,40 @@
   opacity: 1 !important;
 }
 
-/* Studio Radaelli color palette */
+/* Studio Radaelli Professional Color Palette */
 :root {
-  --radaelli-blue-50: #eff6ff;
-  --radaelli-blue-100: #dbeafe;
-  --radaelli-blue-200: #bfdbfe;
-  --radaelli-blue-300: #93c5fd;
-  --radaelli-blue-400: #60a5fa;
-  --radaelli-blue-500: #3b82f6;
-  --radaelli-blue-600: #2563eb;
-  --radaelli-blue-700: #1d4ed8;
-  --radaelli-blue-800: #1e40af;
-  --radaelli-blue-900: #1e3a8a;
+  --radaelli-green-50: #f0fdf4;
+  --radaelli-green-100: #dcfce7;
+  --radaelli-green-200: #bbf7d0;
+  --radaelli-green-300: #86efac;
+  --radaelli-green-400: #4ade80;
+  --radaelli-green-500: #22c55e;
+  --radaelli-green-600: #16a34a;
+  --radaelli-green-700: #15803d;
+  --radaelli-green-800: #166534;
+  --radaelli-green-900: #14532d;
+  
+  --radaelli-olive-50: #f7f7f2;
+  --radaelli-olive-100: #e8e8d8;
+  --radaelli-olive-200: #d1d1b8;
+  --radaelli-olive-300: #b3b38f;
+  --radaelli-olive-400: #8f8f6b;
+  --radaelli-olive-500: #6b6b4a;
+  --radaelli-olive-600: #52523a;
+  --radaelli-olive-700: #40402e;
+  --radaelli-olive-800: #333325;
+  --radaelli-olive-900: #2a2a1f;
+  
+  --radaelli-gold-50: #fffbeb;
+  --radaelli-gold-100: #fef3c7;
+  --radaelli-gold-200: #fde68a;
+  --radaelli-gold-300: #fcd34d;
+  --radaelli-gold-400: #fbbf24;
+  --radaelli-gold-500: #f59e0b;
+  --radaelli-gold-600: #d97706;
+  --radaelli-gold-700: #b45309;
+  --radaelli-gold-800: #92400e;
+  --radaelli-gold-900: #78350f;
   
   --radaelli-gray-50: #f9fafb;
   --radaelli-gray-100: #f3f4f6;
@@ -86,79 +108,87 @@
   --radaelli-gray-900: #111827;
 }
 
-/* Studio Radaelli professional colors */
-.text-radaelli-blue-800 {
-  color: #1e40af !important;
+/* Studio Radaelli Professional Colors */
+.text-radaelli-olive-800 {
+  color: #333325 !important;
 }
 
-.text-radaelli-blue-900 {
-  color: #1e3a8a !important;
+.text-radaelli-olive-900 {
+  color: #2a2a1f !important;
 }
 
-.text-radaelli-gray-700 {
-  color: #374151 !important;
+.text-radaelli-green-700 {
+  color: #15803d !important;
 }
 
-.text-radaelli-gray-800 {
-  color: #1f2937 !important;
+.text-radaelli-green-800 {
+  color: #166534 !important;
+}
+
+.text-radaelli-gold-600 {
+  color: #d97706 !important;
+}
+
+.text-radaelli-gold-700 {
+  color: #b45309 !important;
 }
 
 /* Professional borders */
-.border-radaelli-blue-200 {
-  border-color: #bfdbfe !important;
+.border-radaelli-olive-200 {
+  border-color: #d1d1b8 !important;
 }
 
-.border-radaelli-blue-300 {
-  border-color: #93c5fd !important;
+.border-radaelli-olive-300 {
+  border-color: #b3b38f !important;
 }
 
-.border-radaelli-gray-200 {
-  border-color: #e5e7eb !important;
+.border-radaelli-green-200 {
+  border-color: #bbf7d0 !important;
 }
 
-.border-radaelli-gray-300 {
-  border-color: #d1d5db !important;
+.border-radaelli-green-300 {
+  border-color: #86efac !important;
 }
 
 /* Enhanced dark mode with Studio Radaelli colors */
-html.dark .text-radaelli-blue-100,
-.dark .text-radaelli-blue-100,
-html.dark *[class*="text-radaelli-blue-100"],
-.dark *[class*="text-radaelli-blue-100"] {
-  color: #dbeafe !important;
+html.dark .text-radaelli-green-100,
+.dark .text-radaelli-green-100,
+html.dark *[class*="text-radaelli-green-100"],
+.dark *[class*="text-radaelli-green-100"] {
+  color: #dcfce7 !important;
 }
 
-html.dark .text-radaelli-blue-200,
-.dark .text-radaelli-blue-200,
-html.dark *[class*="text-radaelli-blue-200"],
-.dark *[class*="text-radaelli-blue-200"] {
-  color: #bfdbfe !important;
+html.dark .text-radaelli-green-200,
+.dark .text-radaelli-green-200,
+html.dark *[class*="text-radaelli-green-200"],
+.dark *[class*="text-radaelli-green-200"] {
+  color: #bbf7d0 !important;
 }
 
-html.dark .text-radaelli-blue-300,
-.dark .text-radaelli-blue-300,
-html.dark *[class*="text-radaelli-blue-300"],
-.dark *[class*="text-radaelli-blue-300"] {
-  color: #93c5fd !important;
+html.dark .text-radaelli-green-300,
+.dark .text-radaelli-green-300,
+html.dark *[class*="text-radaelli-green-300"],
+.dark *[class*="text-radaelli-green-300"] {
+  color: #86efac !important;
 }
 
-html.dark .text-radaelli-blue-400,
-.dark .text-radaelli-blue-400,
-html.dark *[class*="text-radaelli-blue-400"],
-.dark *[class*="text-radaelli-blue-400"] {
-  color: #60a5fa !important;
+html.dark .text-radaelli-gold-300,
+.dark .text-radaelli-gold-300,
+html.dark *[class*="text-radaelli-gold-300"],
+.dark *[class*="text-radaelli-gold-300"] {
+  color: #fcd34d !important;
 }
 
-html.dark .text-radaelli-blue-500,
-.dark .text-radaelli-blue-500,
-html.dark *[class*="text-radaelli-blue-500"],
-.dark *[class*="text-radaelli-blue-500"] {
-  color: #3b82f6 !important;
+html.dark .text-radaelli-gold-400,
+.dark .text-radaelli-gold-400,
+html.dark *[class*="text-radaelli-gold-400"],
+.dark *[class*="text-radaelli-gold-400"] {
+  color: #fbbf24 !important;
 }
 
-/* Professional dark mode background */
+/* Professional dark mode background - inspired by classical architecture */
 .dark {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #2a2a1f 0%, #333325 50%, #40402e 100%);
   color: #f9fafb;
 }
 
@@ -169,4 +199,56 @@ html.dark *[class*="text-radaelli-blue-500"],
 
 .placeholder-radaelli-gray-400::placeholder {
   color: #9ca3af !important;
+}
+
+/* Studio Radaelli Typography */
+.font-serif {
+  font-family: 'Times New Roman', serif;
+}
+
+.font-professional {
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+/* Classical architectural elements */
+.classical-gradient {
+  background: linear-gradient(135deg, #f7f7f2 0%, #e8e8d8 50%, #d1d1b8 100%);
+}
+
+.classical-border {
+  border: 2px solid #b3b38f;
+  border-radius: 8px;
+}
+
+/* Professional button styles */
+.btn-radaelli-primary {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-radaelli-primary:hover {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.btn-radaelli-secondary {
+  background: linear-gradient(135deg, #6b6b4a 0%, #52523a 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-radaelli-secondary:hover {
+  background: linear-gradient(135deg, #52523a 0%, #40402e 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(107, 107, 74, 0.3);
 }
