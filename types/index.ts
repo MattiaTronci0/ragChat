@@ -27,7 +27,7 @@ export interface ChatHistory {
 export interface DocumentCategory {
   id: string;
   name: string;
-  color: string; // Tailwind color class e.g., 'blue'
+  color: string; // Tailwind color class e.g., 'green', 'gray', 'amber'
 }
 
 // AnythingLLM specific interfaces

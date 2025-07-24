@@ -17,9 +17,9 @@ const DocumentList: React.FC<DocumentListProps> = ({ documents, onDelete }) => {
 
   if (documents.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-500 dark:text-gray-400 animate-[fadeIn_0.6s_ease-out]">
-        <h3 className="text-xl font-semibold">No Documents Found</h3>
-        <p>Try adjusting your search or filters, or upload a new document.</p>
+      <div className="text-center py-16 text-gray-500 animate-[fadeIn_0.6s_ease-out]">
+        <h3 className="text-xl font-semibold">Nessun Documento Trovato</h3>
+        <p>Prova a modificare la ricerca o i filtri, oppure carica un nuovo documento.</p>
       </div>
     );
   }

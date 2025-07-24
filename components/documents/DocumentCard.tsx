@@ -26,12 +26,12 @@ interface DocumentCardProps {
 }
 
 const categoryColorMap: { [key: string]: string } = {
-  blue: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
-  green: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
-  orange: 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300',
-  purple: 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300',
-  red: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
-  gray: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+  blue: 'bg-blue-100 text-blue-800',
+  green: 'bg-green-100 text-green-800',
+  orange: 'bg-orange-100 text-orange-800',
+  purple: 'bg-purple-100 text-purple-800',
+  red: 'bg-red-100 text-red-800',
+  gray: 'bg-gray-100 text-gray-800',
 };
 
 const getFileIcon = (type: string) => {
@@ -64,13 +64,13 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
     switch (document.status) {
       case 'processing':
       case 'indexed':
-        return 'text-green-600 dark:text-green-400';
+        return 'text-green-600';
       case 'ready':
-        return 'text-green-600 dark:text-green-400';
+        return 'text-green-600';
       case 'error':
-        return 'text-red-600 dark:text-red-400';
+        return 'text-red-600';
       default:
-        return 'text-gray-600 dark:text-gray-400';
+        return 'text-gray-600';
     }
   };
 
@@ -131,15 +131,15 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
 
 
   return (
-    <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 flex flex-col animate-[slideUp_0.6s_ease-out_forwards] opacity-0">
+          <div className="bg-white/95 backdrop-blur-lg rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col animate-[slideUp_0.6s_ease-out_forwards] opacity-0">
       <div className="flex items-start gap-4">
-        <div className="text-gray-500 dark:text-gray-400">{getFileIcon(document.type)}</div>
+                  <div className="text-gray-500">{getFileIcon(document.type)}</div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <p className="font-semibold text-gray-900 dark:text-gray-100 truncate" title={document.name}>{document.name}</p>
+            <p className="font-semibold text-gray-900 truncate" title={document.name}>{document.name}</p>
             {getStatusIcon()}
           </div>
-          <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
+                      <p className="text-xs text-gray-600 mt-1">
             {formatBytes(document.size)} - {document.uploadDate instanceof Date ? document.uploadDate.toLocaleDateString() : new Date(document.uploadDate).toLocaleDateString()}
           </p>
           {document.status !== 'ready' && (
@@ -157,14 +157,14 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
           {document.category}
         </span>
       </div>
-      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700/50 flex justify-end items-center gap-2">
+                <div className="mt-4 pt-4 border-t border-gray-200 flex justify-end items-center gap-2">
         <button 
           onClick={handlePreview} 
           disabled={isActionDisabled}
           className={`p-2 rounded-full transition-colors ${
             isActionDisabled 
-              ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed' 
-              : 'text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
+              ? 'text-gray-400 cursor-not-allowed' 
+              : 'text-gray-600 hover:bg-gray-200'
           }`} 
           title={isActionDisabled ? 'Available when processing is complete' : 'Preview'}
         >
@@ -175,8 +175,8 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
           disabled={isActionDisabled}
           className={`p-2 rounded-full transition-colors ${
             isActionDisabled 
-              ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed' 
-              : 'text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
+              ? 'text-gray-400 cursor-not-allowed' 
+              : 'text-gray-600 hover:bg-gray-200'
           }`} 
           title={isActionDisabled ? 'Available when processing is complete' : 'Download'}
         >
@@ -184,7 +184,7 @@ const DocumentCard: React.FC<DocumentCardProps> = ({ document, onDelete, onPrevi
         </button>
         <button 
           onClick={handleDelete} 
-          className="p-2 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-full transition-colors" 
+          className="p-2 text-red-500 hover:bg-red-100 rounded-full transition-colors" 
           title="Delete"
         >
           <Trash2Icon className="w-5 h-5"/>

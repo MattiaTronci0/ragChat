@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
+
 import { CalculatorIcon, SparklesIcon, MessageSquareIcon, FolderKanbanIcon, HistoryIcon } from '../shared/Icons';
 
 const navItems = [
@@ -22,7 +22,7 @@ const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, i
                 className={
                     `w-full flex items-center p-3 rounded-xl text-white font-semibold shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl ${
                         isActive 
-                            ? `bg-gradient-to-br ${gradient} scale-105 shadow-xl ring-2 ring-white/30 dark:ring-white/50` 
+                            ? `bg-gradient-to-br ${gradient} scale-105 shadow-xl ring-2 ring-white/30` 
                             : `bg-gradient-to-br ${lightGradient} shadow-md hover:bg-gradient-to-br ${gradient}`
                     }`
                 }
@@ -37,13 +37,13 @@ const NavItem: React.FC<typeof navItems[0] & { delay: number }> = ({ to, text, i
 
 const Sidebar: React.FC = () => {
   return (
-    <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/90 dark:bg-gray-900/60 backdrop-blur-xl border-r border-gray-300 dark:border-gray-800 shadow-2xl">
+    <aside className="hidden md:flex flex-col w-72 lg:w-80 xl:w-72 p-6 bg-white/90 backdrop-blur-xl border-r border-gray-300 shadow-2xl">
               <div className="flex items-center gap-3 mb-10">
           <div className="relative">
-            <CalculatorIcon className="w-12 h-12 text-green-700 dark:text-green-300" />
-            <SparklesIcon className="absolute -top-1 -right-1 w-5 h-5 text-amber-500 dark:text-amber-400 animate-pulse" />
+            <CalculatorIcon className="w-12 h-12 text-green-700" />
+            <SparklesIcon className="absolute -top-1 -right-1 w-5 h-5 text-amber-500 animate-pulse" />
           </div>
-          <h1 className="text-xl font-bold font-professional bg-gradient-to-r from-green-700 to-green-600 dark:from-green-300 dark:to-green-400 bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold font-professional bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent">
             AI Contabile
           </h1>
         </div>
@@ -57,10 +57,7 @@ const Sidebar: React.FC = () => {
       </nav>
 
       <div className="mt-10">
-        <div className="flex justify-center mb-4">
-          <ThemeToggle />
-        </div>
-        <p className="text-center text-xs text-gray-600 dark:text-gray-400 font-classical">
+        <p className="text-center text-xs text-gray-600 font-classical">
           Alimentato da AI Avanzata
         </p>
       </div>

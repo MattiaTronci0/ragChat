@@ -26,9 +26,9 @@ const HistoryList: React.FC<HistoryListProps> = ({ history, onDelete }) => {
 
   if (history.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-500 dark:text-gray-400 animate-[fadeIn_0.6s_ease-out]">
-        <h3 className="text-xl font-semibold">No History Found</h3>
-        <p>Your past conversations will appear here.</p>
+      <div className="text-center py-16 text-gray-500 animate-[fadeIn_0.6s_ease-out]">
+        <h3 className="text-xl font-semibold">Nessuna Cronologia Trovata</h3>
+        <p>Le tue conversazioni precedenti appariranno qui.</p>
       </div>
     );
   }

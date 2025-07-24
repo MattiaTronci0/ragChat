@@ -6,7 +6,7 @@ import { DocumentAPI, type ProcessedDocument, type DocumentStatus } from '../uti
 const generateId = () => Date.now().toString() + Math.random().toString(36).substring(2);
 
 const CATEGORIES: DocumentCategory[] = [
-  { id: '1', name: 'Tax Returns', color: 'blue' },
+  { id: '1', name: 'Tax Returns', color: 'green' },
   { id: '2', name: 'Financial Statements', color: 'green' },
   { id: '3', name: 'Receipts', color: 'orange' },
   { id: '4', name: 'Invoices', color: 'purple' },

@@ -233,38 +233,7 @@ html.dark *[class*="text-radaelli-gold-400"],
   background: linear-gradient(to bottom right, #16a34a, #166534) !important;
 }
 
-/* Professional dark mode background - inspired by classical architecture */
-.dark {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #404040 100%);
-  color: #f9fafb;
-}
-
-/* Dark mode specific overrides for better contrast */
-.dark .bg-white\/90 {
-  background-color: rgba(45, 45, 45, 0.9) !important;
-}
-
-.dark .bg-white\/95 {
-  background-color: rgba(45, 45, 45, 0.95) !important;
-}
-
-.dark .bg-white\/80 {
-  background-color: rgba(45, 45, 45, 0.8) !important;
-}
-
-.dark .border-olive-200 {
-  border-color: #52523a !important;
-}
-
-.dark .border-olive-300 {
-  border-color: #6b6b4a !important;
-}
-
 /* Professional placeholder colors */
-.dark .placeholder-radaelli-gray-400::placeholder {
-  color: #9ca3af !important;
-}
-
 .placeholder-radaelli-gray-400::placeholder {
   color: #9ca3af !important;
 }
@@ -326,17 +295,11 @@ html.dark *[class*="text-radaelli-gold-400"],
   color: #1f2937 !important;
 }
 
-.dark .text-high-contrast {
-  color: #f9fafb !important;
-}
-
 .text-medium-contrast {
   color: #4b5563 !important;
 }
 
-.dark .text-medium-contrast {
-  color: #d1d5db !important;
-}
+
 
 /* Better navigation contrast */
 .nav-item-active {

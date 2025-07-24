@@ -45,13 +45,13 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend, isLoading }: Messag
           rows={1}
           disabled={isLoading}
         />
-        <div className="text-sm text-gray-400 dark:text-gray-300 hidden sm:block self-center pr-2">
+        <div className="text-sm text-gray-400 hidden sm:block self-center pr-2">
           ↵ per inviare
         </div>
         <button
           onClick={handleSend}
           disabled={!message.trim() || isLoading}
-          className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:focus:ring-offset-gray-800"
+          className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           aria-label="Invia messaggio"
         >
           <SendIcon className="w-6 h-6" />
