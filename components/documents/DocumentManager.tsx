@@ -4,7 +4,6 @@ import { useDocumentStore } from '../../stores/documentStore';
 import DocumentUpload from './DocumentUpload';
 import DocumentList from './DocumentList';
 import DocumentSearch from './DocumentSearch';
-import CategoryFilter from './CategoryFilter';
 import { FolderKanbanIcon } from '../shared/Icons';
 
 const DocumentManager: React.FC = () => {
@@ -17,10 +16,10 @@ const DocumentManager: React.FC = () => {
         <div className="flex items-center gap-3">
             <FolderKanbanIcon className="w-8 h-8 text-gray-600" />
             <h1 className="text-3xl font-bold font-professional bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-              Hub Documenti
+              Documenti Contabili
             </h1>
         </div>
-        <p className="text-gray-600 mt-1 font-classical">Carica documenti sul VPS per l'elaborazione n8n e l'integrazione con il database vettoriale.</p>
+        <p className="text-gray-600 mt-1 font-classical">Carica documenti contabili, fatture, bilanci e altri documenti fiscali per l'analisi e la consulenza.</p>
       </header>
       
       <div className="flex flex-col lg:flex-row gap-6 flex-grow overflow-hidden">
@@ -31,7 +30,6 @@ const DocumentManager: React.FC = () => {
             </div>
              <div className="flex flex-col sm:flex-row lg:flex-col gap-4 animate-slide-up [animation-delay:150ms]">
                 <DocumentSearch />
-                <CategoryFilter />
             </div>
         </div>
         

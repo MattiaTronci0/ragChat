@@ -26,7 +26,7 @@ const HistoryContainer: React.FC = () => {
             Cronologia Conversazioni
           </h1>
         </div>
-        <p className="text-gray-600 mt-1 font-classical">Rivedi e gestisci le tue conversazioni precedenti.</p>
+        <p className="text-gray-600 mt-1 font-classical">Rivedi e gestisci le tue consulenze contabili precedenti.</p>
       </header>
 
       <div className="my-6 flex flex-col md:flex-row items-center justify-between gap-4 animate-slide-up [animation-delay:100ms]">

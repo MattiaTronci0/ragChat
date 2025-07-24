@@ -320,3 +320,8 @@ html.dark *[class*="text-radaelli-gold-400"],
   background: rgba(156, 163, 175, 0.1) !important;
   color: #d1d5db !important;
 }
+
+/* Custom scale utilities */
+.scale-102 {
+  transform: scale(1.02);
+}

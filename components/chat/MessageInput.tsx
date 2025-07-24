@@ -40,7 +40,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend, isLoading }: Messag
           value={message}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Fai una domanda finanziaria..."
+          placeholder="Fai una domanda sulla consulenza contabile..."
           className="flex-1 bg-transparent p-2 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none resize-none max-h-48"
           rows={1}
           disabled={isLoading}

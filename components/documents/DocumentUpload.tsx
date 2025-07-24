@@ -9,7 +9,6 @@ const DocumentUpload: React.FC = () => {
   const { addDocument, categories } = useDocumentStore();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]?.name || 'Altro');
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
   
@@ -34,7 +33,7 @@ const DocumentUpload: React.FC = () => {
         }, 100);
 
       try {
-        const success = await addDocument(file, selectedCategory);
+        const success = await addDocument(file, 'Altro');
         clearInterval(interval);
         setUploadProgress(100);
         
@@ -66,7 +65,7 @@ const DocumentUpload: React.FC = () => {
         }, 3000);
       }
     }
-  }, [addDocument, selectedCategory]);
+  }, [addDocument]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -134,20 +133,7 @@ const DocumentUpload: React.FC = () => {
         </div>
       )}
       
-      <div className="mt-4">
-        <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-1">
-          Assegna Categoria
-        </label>
-        <select
-          id="category-select"
-          value={selectedCategory}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value)}
-          disabled={isUploading}
-          className="w-full p-2 bg-white border border-gray-300 rounded-lg text-gray-800 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-        >
-          {categories.map(cat => <option key={cat.id} value={cat.name}>{cat.name}</option>)}
-        </select>
-      </div>
+
     </div>
   );
 };

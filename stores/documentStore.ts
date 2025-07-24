@@ -29,7 +29,6 @@ interface UploadingDocument {
 interface DocumentState {
   documents: DocumentWithStatus[];
   searchTerm: string;
-  selectedCategory: string;
   categories: DocumentCategory[];
   isLoading: boolean;
   uploadingDocuments: Record<string, UploadingDocument>;
@@ -38,7 +37,6 @@ interface DocumentState {
   addDocument: (file: File, category: string) => Promise<boolean>;
   deleteDocument: (id: string) => Promise<boolean>;
   setSearchTerm: (term: string) => void;
-  setSelectedCategory: (category: string) => void;
   getFilteredDocuments: () => DocumentWithStatus[];
   loadDocuments: () => Promise<void>;
   refreshDocumentStatus: (id: string) => Promise<void>;
@@ -90,7 +88,6 @@ export const useDocumentStore = create<DocumentState>()(
     (set, get) => ({
       documents: [],
       searchTerm: '',
-      selectedCategory: 'all',
       categories: CATEGORIES,
       isLoading: false,
       uploadingDocuments: {},
@@ -180,16 +177,10 @@ export const useDocumentStore = create<DocumentState>()(
       },
 
       setSearchTerm: (term) => set({ searchTerm: term }),
-      
-      setSelectedCategory: (category) => set({ selectedCategory: category }),
 
       getFilteredDocuments: () => {
-        const { documents, searchTerm, selectedCategory } = get();
+        const { documents, searchTerm } = get();
         return documents
-          .filter((doc) => {
-            if (selectedCategory === 'all') return true;
-            return doc.category === selectedCategory;
-          })
           .filter((doc) => {
             if (!searchTerm) return true;
             return doc.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -288,7 +279,6 @@ export const useDocumentStore = create<DocumentState>()(
       name: 'document-storage',
       partialize: (state) => ({
         documents: state.documents,
-        selectedCategory: state.selectedCategory,
         // Don't persist uploadingDocuments to avoid memory issues
       }),
     }

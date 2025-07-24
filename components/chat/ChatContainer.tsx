@@ -5,7 +5,8 @@ import { useChatStore } from '../../stores/chatStore';
 import { useHistoryStore } from '../../stores/historyStore';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import { BotIcon, SparklesIcon, Trash2Icon } from '../shared/Icons';
+import { BotIcon, SparklesIcon } from '../shared/Icons';
+import { AutoFixHigh } from '@mui/icons-material';
 import ConfirmDialog from '../shared/ConfirmDialog';
 import type { ChatHistory, Message } from '../../types';
 
@@ -68,15 +69,16 @@ const ChatContainer: React.FC = () => {
             <BotIcon className="w-8 h-8 text-green-600" />
             <SparklesIcon className="absolute -top-1 -right-1 w-4 h-4 text-amber-500 animate-pulse" />
           </div>
-          <h2 className="text-lg font-bold font-professional text-green-800">Assistente AI Finanziario</h2>
+          <h2 className="text-lg font-bold font-professional text-green-800">Studio Radaelli - AI Assistente Contabile</h2>
         </div>
         {messages.length > 0 && (
           <button
             onClick={() => setIsConfirmOpen(true)}
             className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-100 rounded-full transition-colors"
-            aria-label="Cancella cronologia chat"
+            aria-label="Pulisci chat"
+            title="Salva questa conversazione nella cronologia e inizia una nuova chat pulita"
           >
-            <Trash2Icon className="w-5 h-5" />
+            <AutoFixHigh className="w-5 h-5" />
           </button>
         )}
       </header>
@@ -88,8 +90,8 @@ const ChatContainer: React.FC = () => {
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={handleClearChat}
-        title="Cancella Chat"
-        message="Sei sicuro di voler eliminare l'intera conversazione? Questa azione non può essere annullata."
+        title="Pulisci Chat"
+        message="Questa conversazione verrà salvata nella cronologia e inizierai una nuova chat pulita. Vuoi continuare?"
       />
     </div>
   );

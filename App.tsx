@@ -2,6 +2,8 @@
 import React, { useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useThemeStore } from './stores/themeStore';
+import { StagewiseToolbar } from '@stagewise/toolbar-react';
+import ReactPlugin from '@stagewise-plugins/react';
 
 import Layout from './components/layout/Layout';
 import ChatPage from './pages/ChatPage';
@@ -18,16 +20,19 @@ const App: React.FC = () => {
   }, [theme]);
 
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<ChatPage />} />
-          <Route path="documents" element={<DocumentsPage />} />
-          <Route path="history" element={<HistoryPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-    </HashRouter>
+    <>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<ChatPage />} />
+            <Route path="documents" element={<DocumentsPage />} />
+            <Route path="history" element={<HistoryPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </HashRouter>
+      <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
+    </>
   );
 };
 

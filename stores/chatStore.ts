@@ -24,10 +24,10 @@ const getMockResponse = (userMessage: string): string => {
     return "Certamente! Per le domande fiscali, è fondamentale considerare la giurisdizione e l'anno fiscale. Una deduzione comune per le aziende è la deduzione per ufficio in casa, a condizione che lo spazio sia utilizzato esclusivamente e regolarmente per il business. Di quale argomento fiscale specifico sei interessato?";
   }
   if (lowerCaseMessage.includes('invoice') || lowerCaseMessage.includes('billing') || lowerCaseMessage.includes('fattura') || lowerCaseMessage.includes('fatturazione')) {
-    return "Posso certamente aiutarti con la fatturazione. Una fattura standard dovrebbe sempre includere un numero di fattura univoco, la data di emissione, i dettagli della tua azienda, i dettagli del cliente, una descrizione dei servizi o prodotti e termini di pagamento chiari. Stai cercando di creare una nuova fattura o gestire quelle esistenti?";
+    return "Come Studio Radaelli, posso aiutarti con tutti gli aspetti della fatturazione. Una fattura elettronica deve includere: numero progressivo, data emissione, dati del cedente e cessionario, descrizione beni/servizi, aliquota IVA e totale. Hai bisogno di assistenza per la fatturazione elettronica o la gestione delle fatture?";
   }
   if (lowerCaseMessage.includes('expense') || lowerCaseMessage.includes('receipt') || lowerCaseMessage.includes('spesa') || lowerCaseMessage.includes('ricevuta')) {
-    return "Una gestione efficace delle spese è fondamentale per la salute finanziaria. È meglio categorizzare le tue spese (es. viaggi, forniture, utenze) e conservare copie digitali di tutte le ricevute. Molte app possono automatizzare questo processo. Vorresti che ti consigliassi alcuni strumenti o ti fornissi suggerimenti sulla categorizzazione delle spese?";
+    return "Studio Radaelli ti aiuta nella gestione contabile delle spese. È importante conservare tutte le ricevute e documenti fiscali per almeno 5 anni. Le spese devono essere correttamente categorizzate (es. costi di produzione, spese generali, ammortamenti) per una corretta contabilizzazione. Hai bisogno di assistenza per la contabilizzazione di spese specifiche?";
   }
   if (lowerCaseMessage.includes('financial planning') || lowerCaseMessage.includes('forecast') || lowerCaseMessage.includes('pianificazione finanziaria') || lowerCaseMessage.includes('previsione')) {
     return "La pianificazione finanziaria comporta la definizione di obiettivi, la raccolta di dati e la creazione di una roadmap. Per le aziende, questo spesso significa creare proiezioni di flusso di cassa, un bilancio e un conto economico per i prossimi 1-3 anni. Qual è l'obiettivo principale del tuo piano finanziario?";
@@ -35,7 +35,7 @@ const getMockResponse = (userMessage: string): string => {
   if (lowerCaseMessage.includes('business analytics') || lowerCaseMessage.includes('kpi') || lowerCaseMessage.includes('analisi aziendale')) {
     return "Ottima domanda! Gli Indicatori di Performance Chiave (KPI) per un'azienda potrebbero includere il Costo di Acquisizione Cliente (CAC), il Valore del Cliente nel Tempo (CLV) e le Entrate Ricorrenti Mensili (MRR). Analizzare questi aiuta a prendere decisioni basate sui dati. In quale area delle performance aziendali sei più interessato a migliorare?";
   }
-  return "Ciao! Come Assistente AI Finanziario, posso aiutarti con una vasta gamma di argomenti inclusi domande fiscali, pianificazione finanziaria e analisi aziendale. Come posso aiutarti oggi?";
+  return "Ciao! Sono l'Assistente AI di Studio Radaelli, specializzato in consulenza contabile. Posso aiutarti con domande fiscali, contabilità aziendale, dichiarazioni dei redditi, adempimenti IVA e molto altro. Come posso aiutarti oggi?";
 };
 
 // Session management utilities
