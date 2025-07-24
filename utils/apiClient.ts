@@ -79,7 +79,11 @@ export class DocumentAPI {
         }
 
         const result = await response.json();
-        return result;
+        return {
+          success: result.success,
+          documentId: result.documents?.[0]?.id,
+          message: 'Document uploaded successfully'
+        };
       } catch (error: any) {
         lastError = error;
         
