@@ -159,41 +159,47 @@ app.post('/api/documents/upload',
 
       const category = req.body.category || 'Other';
 
-      // Create FormData for AnythingLLM API
+      // Step 1: Upload to AnythingLLM
       const formData = new FormData();
       formData.append('file', req.file.buffer, {
         filename: req.file.originalname,
-        contentType: req.file.mimetype,
+        contentType: req.file.mimetype
       });
-      formData.append('addToWorkspaces', ANYTHINGLLM_WORKSPACE);
 
-      // Upload to AnythingLLM using proper FormData
-      const uploadResult = await makeAnythingLLMRequest('/api/v1/document/upload', {
+      const uploadResponse = await fetch(`${ANYTHINGLLM_BASE_URL}/api/v1/system/upload-document`, {
         method: 'POST',
-        body: formData,
         headers: {
-          ...formData.getHeaders(),
-        }
+          'Authorization': `Bearer ${ANYTHINGLLM_API_KEY}`,
+          ...formData.getHeaders()
+        },
+        body: formData,
       });
 
-      if (!uploadResult.success) {
-        throw new Error(uploadResult.error || 'Upload failed');
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload failed: ${uploadResponse.status}`);
       }
 
-      // Document is automatically added to workspace via addToWorkspaces parameter
-      const document = uploadResult.documents[0];
-      
+      const uploadResult = await uploadResponse.json();
+
+      // Step 2: Add to workspace
+      await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}/update-embeddings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          adds: [uploadResult.filename],
+          metadata: {
+            category: category,
+            uploadDate: new Date().toISOString()
+          }
+        })
+      });
+
       res.json({
         success: true,
-        documentId: document.id,
-        message: 'Document uploaded and added to workspace successfully',
-        document: {
-          id: document.id,
-          name: document.title,
-          location: document.location,
-          wordCount: document.wordCount,
-          tokenCount: document.token_count_estimate
-        }
+        documentId: uploadResult.filename,
+        message: 'Document uploaded and added to workspace successfully'
       });
 
     } catch (error) {
@@ -243,7 +249,7 @@ app.get('/api/documents/:id/status', validateApiKey, async (req, res) => {
     const workspaceData = await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}`);
     const documents = workspaceData.workspace?.documents || [];
     
-    const document = documents.find(doc => doc.docpath && doc.docpath.includes(id));
+    const document = documents.find(doc => doc.filename === id);
     
     if (!document) {
       return res.status(404).json({ 
@@ -273,27 +279,13 @@ app.delete('/api/documents/:id', validateApiKey, async (req, res) => {
   try {
     const { id } = req.params;
     
-    // First, get the document details to find its system name
-    const workspaceData = await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}`);
-    const documents = workspaceData.workspace?.documents || [];
-    
-    const document = documents.find(doc => doc.docpath && doc.docpath.includes(id));
-    
-    if (!document) {
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Document not found' 
-      });
-    }
-
-    // Use the workspace embeddings update endpoint with deletes parameter
-    await makeAnythingLLMRequest(`/api/v1/workspace/${ANYTHINGLLM_WORKSPACE}/update-embeddings`, {
+    await makeAnythingLLMRequest(`/api/workspace/${ANYTHINGLLM_WORKSPACE}/update-embeddings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        deletes: [document.docpath]
+        removes: [id]
       })
     });
 
