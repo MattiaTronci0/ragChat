@@ -2,6 +2,16 @@
 # Stage 1: Build React application
 FROM node:18-alpine AS builder
 
+# Build arguments for environment variables
+ARG VITE_ANYTHINGLLM_URL
+ARG VITE_ANYTHINGLLM_API_KEY
+ARG VITE_ANYTHINGLLM_WORKSPACE
+
+# Set environment variables for build
+ENV VITE_ANYTHINGLLM_URL=$VITE_ANYTHINGLLM_URL
+ENV VITE_ANYTHINGLLM_API_KEY=$VITE_ANYTHINGLLM_API_KEY
+ENV VITE_ANYTHINGLLM_WORKSPACE=$VITE_ANYTHINGLLM_WORKSPACE
+
 # Set working directory
 WORKDIR /app
 

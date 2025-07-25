@@ -28,11 +28,15 @@ export interface ProcessedDocument {
 }
 
 export class DocumentAPI {
-  private static readonly BASE_URL = '/api';
+  private static readonly BASE_URL = import.meta.env.VITE_ANYTHINGLLM_URL || 'http://localhost:3001/api/v1';
+  private static readonly API_KEY = import.meta.env.VITE_ANYTHINGLLM_API_KEY || 'ETVXYEN-K9CMYY4-K3X6WRJ-XSS8SXQ';
+  private static readonly WORKSPACE = import.meta.env.VITE_ANYTHINGLLM_WORKSPACE || 'prova';
+  private static readonly USE_MOCK = false;
 
   private static getHeaders(): HeadersInit {
     return {
-      'Accept': 'application/json',
+      'Authorization': `Bearer ${this.API_KEY}`,
+      'Accept': 'application/json'
     };
   }
 
@@ -61,10 +65,13 @@ export class DocumentAPI {
       try {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('category', category);
+        formData.append('addToWorkspaces', this.WORKSPACE);
 
-        const response = await fetch(`${this.BASE_URL}/documents/upload`, {
+        const response = await fetch(`${this.BASE_URL}/document/upload`, {
           method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${this.API_KEY}`
+          },
           body: formData,
         });
 
@@ -80,6 +87,7 @@ export class DocumentAPI {
           message: 'Document uploaded successfully'
         };
       } catch (error: any) {
+
         lastError = error;
         
         // Non riprovare su errori client o errori di validazione
@@ -100,7 +108,7 @@ export class DocumentAPI {
 
   static async getDocumentStatus(documentId: string): Promise<DocumentStatus | null> {
     try {
-      const response = await fetch(`${this.BASE_URL}/documents/${documentId}/status`, {
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}`, {
         method: 'GET',
         headers: this.getHeaders(),
       });
@@ -109,7 +117,18 @@ export class DocumentAPI {
         throw new Error(`Status check failed: ${response.status}`);
       }
 
-      return await response.json();
+      const data = await response.json();
+      const documents = data.workspace?.[0]?.documents || [];
+      const document = documents.find(doc => doc.docpath && doc.docpath.includes(documentId));
+      
+      if (!document) return null;
+      
+      return {
+        id: documentId,
+        status: document.cached ? 'ready' : 'processing',
+        progress: document.cached ? 100 : 50,
+        message: document.cached ? 'Document ready for querying' : 'Processing document...'
+      };
     } catch (error) {
       console.error('Status check error:', error);
       throw error;
@@ -118,7 +137,7 @@ export class DocumentAPI {
 
   static async getDocuments(): Promise<ProcessedDocument[]> {
     try {
-      const response = await fetch(`${this.BASE_URL}/documents`, {
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}`, {
         method: 'GET',
         headers: this.getHeaders(),
       });
@@ -127,8 +146,18 @@ export class DocumentAPI {
         throw new Error(`Failed to fetch documents: ${response.status}`);
       }
 
-      const documents = await response.json();
-      return documents || [];
+      const data = await response.json();
+      const documents = data.workspace?.[0]?.documents || [];
+      
+      return documents.map(doc => ({
+        id: doc.docpath || doc.id,
+        name: JSON.parse(doc.metadata || '{}').title || doc.filename,
+        type: doc.mime || 'application/octet-stream',
+        size: JSON.parse(doc.metadata || '{}').wordCount || 0,
+        category: 'Other',
+        uploadDate: doc.createdAt || new Date().toISOString(),
+        status: 'ready'
+      }));
     } catch (error) {
       console.error('Failed to fetch documents:', error);
       throw error;
@@ -137,9 +166,15 @@ export class DocumentAPI {
 
   static async deleteDocument(documentId: string): Promise<boolean> {
     try {
-      const response = await fetch(`${this.BASE_URL}/documents/${documentId}`, {
-        method: 'DELETE',
-        headers: this.getHeaders(),
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}/update-embeddings`, {
+        method: 'POST',
+        headers: {
+          ...this.getHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          deletes: [documentId]
+        })
       });
 
       return response.ok;
@@ -195,23 +230,28 @@ export interface ChatMessage {
 }
 
 export class ChatAPI {
-  private static readonly BASE_URL = '/api';
+  private static readonly BASE_URL = import.meta.env.VITE_ANYTHINGLLM_URL || 'http://localhost:3001/api/v1';
+  private static readonly API_KEY = import.meta.env.VITE_ANYTHINGLLM_API_KEY || 'ETVXYEN-K9CMYY4-K3X6WRJ-XSS8SXQ';
+  private static readonly WORKSPACE = import.meta.env.VITE_ANYTHINGLLM_WORKSPACE || 'prova';
+  private static readonly USE_MOCK = false;
 
   private static getHeaders(): HeadersInit {
     return {
+      'Authorization': `Bearer ${this.API_KEY}`,
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      'Accept': 'application/json'
     };
   }
 
   static async sendMessage(message: string, sessionId?: string): Promise<ChatResponse> {
     try {
-      const response = await fetch(`${this.BASE_URL}/chat`, {
+      const response = await fetch(`${this.BASE_URL}/workspace/${this.WORKSPACE}/chat`, {
         method: 'POST',
         headers: this.getHeaders(),
         body: JSON.stringify({
           message: message,
-          sessionId: sessionId
+          mode: 'chat',
+          sessionId: sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2)}`
         }),
       });
 
@@ -220,7 +260,11 @@ export class ChatAPI {
       }
 
       const result = await response.json();
-      return result;
+      return {
+        success: true,
+        response: result.textResponse || result.response || 'Sorry, I could not process your request.',
+        sessionId: sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2)}`
+      };
     } catch (error) {
       console.error('Chat API error:', error);
       throw error;
