@@ -19,7 +19,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, onClose }) 
             <FileIcon className="w-5 h-5 text-gray-600 flex-shrink-0" />
             <h3 className="text-lg font-bold text-gray-800 truncate">{document.name}</h3>
           </div>
-          <button onClick={onClose} className="p-2 text-gray-500 hover:bg-gray-200 rounded-full transition-colors">
+                      <button onClick={onClose} className="p-2 text-gray-500 hover:bg-gray-200 rounded-full transition-colors">
             <XIcon className="w-6 h-6" />
           </button>
         </header>
@@ -27,7 +27,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document, onClose }) 
           <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
             <div className="text-center text-gray-500">
               <p className="font-semibold">Anteprima Documento Non Disponibile</p>
-              <p className="text-sm">Il contenuto del documento non può essere visualizzato in questo momento.</p>
+              <p className="text-sm">Questo è un mock-up. In un'applicazione reale, il contenuto del documento sarebbe renderizzato qui.</p>
             </div>
           </div>
         </div>

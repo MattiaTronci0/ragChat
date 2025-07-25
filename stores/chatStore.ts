@@ -11,11 +11,32 @@ interface ChatState {
   clearChat: () => void;
   setLoading: (loading: boolean) => void;
   sendMessage: (userMessage: string) => Promise<void>;
+  generateMockResponse: (userMessage: string) => void;
   loadHistory: (messages: Message[]) => void;
   setSessionId: (sessionId: string) => void;
 }
 
 const generateId = () => Date.now().toString() + Math.random().toString(36).substring(2);
+
+const getMockResponse = (userMessage: string): string => {
+  const lowerCaseMessage = userMessage.toLowerCase();
+  if (lowerCaseMessage.includes('tax') || lowerCaseMessage.includes('deduction') || lowerCaseMessage.includes('tasse') || lowerCaseMessage.includes('deduzione')) {
+    return "Certamente! Per le domande fiscali, è fondamentale considerare la giurisdizione e l'anno fiscale. Una deduzione comune per le aziende è la deduzione per ufficio in casa, a condizione che lo spazio sia utilizzato esclusivamente e regolarmente per il business. Di quale argomento fiscale specifico sei interessato?";
+  }
+  if (lowerCaseMessage.includes('invoice') || lowerCaseMessage.includes('billing') || lowerCaseMessage.includes('fattura') || lowerCaseMessage.includes('fatturazione')) {
+    return "Come Studio Radaelli, posso aiutarti con tutti gli aspetti della fatturazione. Una fattura elettronica deve includere: numero progressivo, data emissione, dati del cedente e cessionario, descrizione beni/servizi, aliquota IVA e totale. Hai bisogno di assistenza per la fatturazione elettronica o la gestione delle fatture?";
+  }
+  if (lowerCaseMessage.includes('expense') || lowerCaseMessage.includes('receipt') || lowerCaseMessage.includes('spesa') || lowerCaseMessage.includes('ricevuta')) {
+    return "Studio Radaelli ti aiuta nella gestione contabile delle spese. È importante conservare tutte le ricevute e documenti fiscali per almeno 5 anni. Le spese devono essere correttamente categorizzate (es. costi di produzione, spese generali, ammortamenti) per una corretta contabilizzazione. Hai bisogno di assistenza per la contabilizzazione di spese specifiche?";
+  }
+  if (lowerCaseMessage.includes('financial planning') || lowerCaseMessage.includes('forecast') || lowerCaseMessage.includes('pianificazione finanziaria') || lowerCaseMessage.includes('previsione')) {
+    return "La pianificazione finanziaria comporta la definizione di obiettivi, la raccolta di dati e la creazione di una roadmap. Per le aziende, questo spesso significa creare proiezioni di flusso di cassa, un bilancio e un conto economico per i prossimi 1-3 anni. Qual è l'obiettivo principale del tuo piano finanziario?";
+  }
+  if (lowerCaseMessage.includes('business analytics') || lowerCaseMessage.includes('kpi') || lowerCaseMessage.includes('analisi aziendale')) {
+    return "Ottima domanda! Gli Indicatori di Performance Chiave (KPI) per un'azienda potrebbero includere il Costo di Acquisizione Cliente (CAC), il Valore del Cliente nel Tempo (CLV) e le Entrate Ricorrenti Mensili (MRR). Analizzare questi aiuta a prendere decisioni basate sui dati. In quale area delle performance aziendali sei più interessato a migliorare?";
+  }
+  return "Ciao! Sono l'Assistente AI di Studio Radaelli, specializzato in consulenza contabile. Posso aiutarti con domande fiscali, contabilità aziendale, dichiarazioni dei redditi, adempimenti IVA e molto altro. Come posso aiutarti oggi?";
+};
 
 // Session management utilities
 const SESSION_STORAGE_KEY = 'ragchat_session_id';
@@ -84,6 +105,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }
     } catch (error) {
       console.error('Errore chat:', error);
+      // Fallback a risposta mock in caso di errore
       const aiMsg: Message = {
         id: generateId(),
         content: 'Mi dispiace, ho riscontrato un errore. Riprova.',
@@ -94,5 +116,28 @@ export const useChatStore = create<ChatState>((set, get) => ({
     } finally {
       get().setLoading(false);
     }
+  },
+  
+  generateMockResponse: (userMessage: string) => {
+    const userMsg: Message = {
+        id: generateId(),
+        content: userMessage,
+        isUser: true,
+        timestamp: new Date(),
+    };
+    get().addMessage(userMsg);
+    get().setLoading(true);
+
+    setTimeout(() => {
+        const aiResponseContent = getMockResponse(userMessage);
+        const aiMsg: Message = {
+            id: generateId(),
+            content: aiResponseContent,
+            isUser: false,
+            timestamp: new Date(),
+        };
+        get().addMessage(aiMsg);
+        get().setLoading(false);
+    }, 1500 + Math.random() * 1000); // Simulate network delay
   }
 }));

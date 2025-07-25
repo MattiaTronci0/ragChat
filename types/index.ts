@@ -13,7 +13,7 @@ export interface Document {
   size: number; // in bytes
   category: string; // e.g., 'Tax Returns'
   uploadDate: Date;
-  url?: string; // URL for preview/download
+  url?: string; // a mock URL for preview/download
   file?: File;
 }
 
